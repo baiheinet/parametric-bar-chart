@@ -43,6 +43,38 @@ main { display: flex; flex: 1; overflow: hidden; }
   scrollbar-width: thin;
 }
 
+/* Tab styles */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+  font-family: var(--font);
+}
+
+.tab-btn:hover { color: var(--primary); }
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
 .control-group {
   margin-bottom: 16px;
   padding-bottom: 16px;

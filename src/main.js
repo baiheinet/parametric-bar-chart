@@ -353,53 +353,79 @@ canvas.addEventListener('mouseleave', () => {
   tooltip.classList.remove('visible')
 })
 
+// ==================== TAB STATE ====================
+let activeTab = 'curve' // 'curve' | 'graphic'
+
 // ==================== BUILD CONTROLS ====================
 function buildControls() {
   const container = document.getElementById('controls')
   container.innerHTML = ''
 
-  // Mode selector
-  container.appendChild(createGroup('显示模式', [
+  // Tab bar
+  const tabBar = document.createElement('div')
+  tabBar.className = 'tab-bar'
+
+  const curveTab = document.createElement('button')
+  curveTab.className = 'tab-btn' + (activeTab === 'curve' ? ' active' : '')
+  curveTab.textContent = '曲线设置'
+  curveTab.addEventListener('click', () => { activeTab = 'curve'; buildControls() })
+
+  const graphicTab = document.createElement('button')
+  graphicTab.className = 'tab-btn' + (activeTab === 'graphic' ? ' active' : '')
+  graphicTab.textContent = '图形设置'
+  graphicTab.addEventListener('click', () => { activeTab = 'graphic'; buildControls() })
+
+  tabBar.appendChild(curveTab)
+  tabBar.appendChild(graphicTab)
+  container.appendChild(tabBar)
+
+  // Tab panels
+  const curvePanel = document.createElement('div')
+  curvePanel.className = 'tab-panel' + (activeTab === 'curve' ? ' active' : '')
+
+  const graphicPanel = document.createElement('div')
+  graphicPanel.className = 'tab-panel' + (activeTab === 'graphic' ? ' active' : '')
+
+  // === CURVE TAB ===
+  curvePanel.appendChild(createGroup('显示模式', [
     createModeButtons(),
   ]))
 
-  // Single curve selector
-  container.appendChild(createGroup('曲线选择', [
+  curvePanel.appendChild(createGroup('曲线选择', [
     createSingleCurveSelector(),
   ]))
 
-  // Multi curve quick select
   if (state.mode === 'multi') {
-    container.appendChild(createGroup('快速选择（多选）', [
+    curvePanel.appendChild(createGroup('快速选择（多选）', [
       createMultiCurveSelector(),
     ]))
   }
 
-  // Chart settings
-  container.appendChild(createGroup('图表设置', [
+  curvePanel.appendChild(buildDataViewer())
+
+  // === GRAPHIC TAB ===
+  graphicPanel.appendChild(createGroup('图表设置', [
     createTextRow('标题', 'chartTitle', state.chartTitle),
     createTextRow('X 轴标题', 'xAxisTitle', state.xAxisTitle),
     createTextRow('Y 轴标题', 'yAxisTitle', state.yAxisTitle),
   ]))
 
-  // Display
-  container.appendChild(createGroup('显示选项', [
+  graphicPanel.appendChild(createGroup('显示选项', [
     createCheckboxRow('显示网格线', 'showGrid', state.showGrid),
     createCheckboxRow('显示数据点', 'showDataPoints', state.showDataPoints),
     createCheckboxRow('显示连线', 'showLine', state.showLine),
     createCheckboxRow('播放动画', 'animating', state.animating),
   ]))
 
-  // Line width
-  container.appendChild(createGroup('样式设置', [
+  graphicPanel.appendChild(createGroup('样式设置', [
     createRangeRow('线宽', 'lineWidth', 1, 6, state.lineWidth),
     createColorRow('背景色', 'backgroundColor', state.backgroundColor),
     createColorRow('网格线', 'gridColor', state.gridColor),
     createColorRow('坐标轴', 'axisColor', state.axisColor),
   ]))
 
-  // Data viewer
-  buildDataViewer(container)
+  container.appendChild(curvePanel)
+  container.appendChild(graphicPanel)
 }
 
 function createModeButtons() {
@@ -562,8 +588,7 @@ function createGroup(title, rows) {
   return div
 }
 
-// ==================== DATA VIEWER ====================
-function buildDataViewer(container) {
+function buildDataViewer() {
   const div = document.createElement('div')
   div.className = 'control-group'
   div.innerHTML = '<h3>原始数据表</h3>'
@@ -589,7 +614,7 @@ function buildDataViewer(container) {
   table.appendChild(tbody)
   viewer.appendChild(table)
   div.appendChild(viewer)
-  container.appendChild(div)
+  return div
 }
 
 // ==================== EXPORT ====================
