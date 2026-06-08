@@ -89,13 +89,13 @@ const state = {
   mode: 'single', // 'single' | 'multi'
   selectedCurve: 0, // index for single mode
   selectedCurves: new Set([0]), // set of indices for multi mode
-  chartTitle: 'Primavera P6 资源加载曲线（S 曲线累计）',
+  chartTitle: 'Primavera P6 资源加载柱状图（累计百分比）',
   xAxisTitle: '工期百分比（Duration %）',
   yAxisTitle: '累计百分比（%）',
   showGrid: true,
   showDataPoints: false,
-  showLine: true,
-  lineWidth: 2.5,
+  gradientFill: true,
+  barWidth: 25,
   gridColor: '#F1F5F9',
   axisColor: '#CBD5E1',
   backgroundColor: '#FFFFFF',
@@ -227,50 +227,55 @@ function draw() {
   ctx.fillText(state.yAxisTitle, 0, 0)
   ctx.restore()
 
-  // Draw curves
+  // Draw bars
   const plotPoints = []
-  visibleOrigIndices.forEach((origIdx, i) => {
+  const barWidth = Math.max(8, Math.min(40, chartW / 20 * 0.6))
+
+  visibleOrigIndices.forEach((origIdx) => {
     const curve = P6_CURVES[origIdx]
     const cumValues = cumulative(curve.values)
     const progress = state.animProgress
     const color = curve.color
 
-    ctx.strokeStyle = color
-    ctx.lineWidth = state.lineWidth
-    ctx.lineJoin = 'round'
-    ctx.lineCap = 'round'
+    // Gradient fill for bars
+    const gradient = ctx.createLinearGradient(0, pad.top + chartH, 0, pad.top)
+    gradient.addColorStop(0, color + '44')
+    gradient.addColorStop(1, color + 'cc')
 
-    if (state.showLine) {
-      ctx.beginPath()
-      cumValues.forEach((v, j) => {
-        const x = pad.left + (j / 20) * chartW
-        const y = pad.top + chartH - (v / 100) * chartH * progress
-        if (j === 0) ctx.moveTo(x, y)
-        else ctx.lineTo(x, y)
-      })
-      ctx.stroke()
-    }
+    cumValues.forEach((v, j) => {
+      const x = pad.left + (j / 20) * chartW
+      const barH = (v / 100) * chartH * progress
+      const barTop = pad.top + chartH - barH
+      const barX = x - barWidth / 2
 
-    // Data points
-    if (state.showDataPoints) {
-      cumValues.forEach((v, j) => {
-        const x = pad.left + (j / 20) * chartW
-        const y = pad.top + chartH - (v / 100) * chartH * progress
+      // Bar fill
+      if (state.gradientFill) {
+        ctx.fillStyle = gradient
+      } else {
+        ctx.fillStyle = color
+      }
+      ctx.fillRect(barX, barTop, barWidth, barH)
+
+      // Bar border
+      if (!state.gradientFill) {
+        ctx.strokeStyle = color
+        ctx.lineWidth = 1
+        ctx.strokeRect(barX, barTop, barWidth, barH)
+      }
+
+      // Data point markers
+      if (state.showDataPoints) {
         ctx.beginPath()
-        ctx.arc(x, y, 3, 0, Math.PI * 2)
+        ctx.arc(x, barTop, 3, 0, Math.PI * 2)
         ctx.fillStyle = color
         ctx.fill()
         ctx.strokeStyle = '#fff'
         ctx.lineWidth = 1.5
         ctx.stroke()
-      })
-    }
+      }
 
-    // Store for tooltip
-    cumValues.forEach((v, j) => {
-      const x = pad.left + (j / 20) * chartW
-      const y = pad.top + chartH - (v / 100) * chartH * progress
-      plotPoints.push({ x, y, curveName: curve.name, duration: DURATIONS[j], value: v.toFixed(2), color })
+      // Store for tooltip
+      plotPoints.push({ x: x, y: barTop, curveName: curve.name, duration: DURATIONS[j], value: v.toFixed(2), color })
     })
   })
 
@@ -367,7 +372,7 @@ function buildControls() {
 
   const curveTab = document.createElement('button')
   curveTab.className = 'tab-btn' + (activeTab === 'curve' ? ' active' : '')
-  curveTab.textContent = '曲线设置'
+  curveTab.textContent = '柱状图设置'
   curveTab.addEventListener('click', () => { activeTab = 'curve'; buildControls() })
 
   const graphicTab = document.createElement('button')
@@ -391,7 +396,7 @@ function buildControls() {
     createModeButtons(),
   ]))
 
-  curvePanel.appendChild(createGroup('曲线选择', [
+  curvePanel.appendChild(createGroup('柱状图设置', [
     createSingleCurveSelector(),
   ]))
 
@@ -413,12 +418,12 @@ function buildControls() {
   graphicPanel.appendChild(createGroup('显示选项', [
     createCheckboxRow('显示网格线', 'showGrid', state.showGrid),
     createCheckboxRow('显示数据点', 'showDataPoints', state.showDataPoints),
-    createCheckboxRow('显示连线', 'showLine', state.showLine),
+    createCheckboxRow('渐变填充', 'gradientFill', state.gradientFill),
     createCheckboxRow('播放动画', 'animating', state.animating),
   ]))
 
   graphicPanel.appendChild(createGroup('样式设置', [
-    createRangeRow('线宽', 'lineWidth', 1, 6, state.lineWidth),
+    createRangeRow('柱宽', 'barWidth', 8, 50, state.barWidth),
     createColorRow('背景色', 'backgroundColor', state.backgroundColor),
     createColorRow('网格线', 'gridColor', state.gridColor),
     createColorRow('坐标轴', 'axisColor', state.axisColor),
@@ -620,7 +625,7 @@ function buildDataViewer() {
 // ==================== EXPORT ====================
 document.getElementById('export-png').addEventListener('click', () => {
   const link = document.createElement('a')
-  link.download = 'p6-resource-curve.png'
+  link.download = 'p6-resource-bar.png'
   link.href = canvas.toDataURL('image/png')
   link.click()
 })
@@ -634,7 +639,7 @@ document.getElementById('export-csv').addEventListener('click', () => {
   })
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' })
   const link = document.createElement('a')
-  link.download = 'p6-resource-curve.csv'
+  link.download = 'p6-resource-bar.csv'
   link.href = URL.createObjectURL(blob)
   link.click()
   URL.revokeObjectURL(link.href)
