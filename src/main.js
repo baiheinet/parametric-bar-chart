@@ -1,75 +1,146 @@
 import './style.css'
 
-// ==================== DEFAULT DATA ====================
-const defaultData = [
-  { label: '一月', value: 120 },
-  { label: '二月', value: 200 },
-  { label: '三月', value: 150 },
-  { label: '四月', value: 280 },
-  { label: '五月', value: 230 },
-  { label: '六月', value: 310 },
+// ==================== PRIMAVERA P6 12 CURVE DATA ====================
+const P6_CURVES = [
+  {
+    name: 'Linear 线性/均匀',
+    shortName: '线性',
+    color: '#4F46E5',
+    values: [4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76],
+  },
+  {
+    name: 'Front Loaded 前加载',
+    shortName: '前加载',
+    color: '#8B5CF6',
+    values: [39.60, 24.75, 14.85, 9.90, 4.95, 2.47, 0.99, 0.74, 0.49, 0.40, 0.30, 0.20, 0.15, 0.10, 0.05, 0.03, 0.02, 0.01, 0.00, 0.00, 0.00],
+  },
+  {
+    name: 'Back Loaded 后加载',
+    shortName: '后加载',
+    color: '#EC4899',
+    values: [0.00, 0.00, 0.00, 0.01, 0.02, 0.03, 0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.49, 0.74, 0.99, 2.47, 4.95, 9.90, 14.85, 24.75, 39.60],
+  },
+  {
+    name: 'Early Peak 早期峰值',
+    shortName: '早期峰值',
+    color: '#14B8A6',
+    values: [16.26, 13.01, 10.84, 8.67, 7.59, 6.50, 5.96, 5.42, 4.88, 4.34, 3.79, 3.25, 2.71, 2.17, 1.63, 1.08, 0.87, 0.54, 0.33, 0.16, 0.00],
+  },
+  {
+    name: 'Late Peak 晚期峰值',
+    shortName: '晚期峰值',
+    color: '#F59E0B',
+    values: [0.00, 0.16, 0.33, 0.54, 0.87, 1.08, 1.63, 2.17, 2.71, 3.25, 3.79, 4.34, 4.88, 5.42, 5.96, 6.50, 7.59, 8.67, 10.84, 13.01, 16.26],
+  },
+  {
+    name: 'Bell Shaped 钟形',
+    shortName: '钟形',
+    color: '#10B981',
+    values: [0.59, 1.18, 2.37, 4.14, 5.92, 8.28, 10.06, 11.24, 11.83, 11.24, 10.06, 8.28, 5.92, 4.14, 2.37, 1.18, 0.59, 0.37, 0.18, 0.06, 0.00],
+  },
+  {
+    name: 'Triangular 三角形',
+    shortName: '三角形',
+    color: '#EF4444',
+    values: [0.00, 1.00, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00, 8.00, 9.00, 10.00, 9.00, 8.00, 7.00, 6.00, 5.00, 4.00, 3.00, 2.00, 1.00, 0.00],
+  },
+  {
+    name: 'Trapezoidal 梯形',
+    shortName: '梯形',
+    color: '#3B82F6',
+    values: [1.25, 2.50, 3.75, 5.00, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 5.00, 3.75, 2.50, 1.25, 0.00],
+  },
+  {
+    name: 'At Start 在开始',
+    shortName: '在开始',
+    color: '#F97316',
+    values: [100.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
+  },
+  {
+    name: 'At Finish 在结束',
+    shortName: '在结束',
+    color: '#06B6D4',
+    values: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 100.00],
+  },
+  {
+    name: 'Double Peak 双峰值',
+    shortName: '双峰值',
+    color: '#A855F7',
+    values: [10.39, 7.79, 5.20, 2.60, 1.30, 0.65, 1.30, 2.60, 5.19, 7.79, 10.39, 7.79, 5.19, 2.60, 1.30, 0.65, 1.30, 2.60, 5.19, 7.79, 10.39],
+  },
+  {
+    name: 'Skewed Left 左偏/上升',
+    shortName: '左偏上升',
+    color: '#14B8A6',
+    values: [0.43, 0.87, 1.30, 1.73, 2.16, 2.60, 3.03, 3.46, 3.90, 4.33, 4.76, 5.19, 5.63, 6.06, 6.49, 6.93, 7.36, 7.79, 8.23, 8.66, 9.09],
+  },
 ]
 
-const defaultColors = ['#4F46E5', '#8B5CF6', '#EC4899', '#14B8A6', '#F59E0B', '#3B82F6']
+// Compute cumulative values for S-curves
+function cumulative(arr) {
+  const result = []
+  let sum = 0
+  for (const v of arr) { sum += v; result.push(sum) }
+  return result
+}
 
 // ==================== STATE ====================
 const state = {
-  data: JSON.parse(JSON.stringify(defaultData)),
-  colors: [...defaultColors],
-  chartTitle: '月度销售数据',
-  yAxisTitle: '销售额 (万元)',
-  barWidth: 50,
-  barGap: 20,
-  chartPadding: { top: 60, right: 40, bottom: 80, left: 70 },
-  maxValue: null,
-  gridLines: 5,
-  barRadius: 4,
-  showValue: true,
+  mode: 'single', // 'single' | 'multi'
+  selectedCurve: 0, // index for single mode
+  selectedCurves: new Set([0]), // set of indices for multi mode
+  chartTitle: 'Primavera P6 资源加载曲线（S 曲线累计）',
+  xAxisTitle: '工期百分比（Duration %）',
+  yAxisTitle: '累计百分比（%）',
   showGrid: true,
-  showTooltip: true,
-  animation: true,
-  fontFamily: '-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif',
-  titleFont: '22px',
-  labelFont: '13px',
-  valueFont: '12px',
-  legendPosition: 'top',
-  gradient: false,
-  barShape: 'rounded',
-  backgroundColor: '#FFFFFF',
+  showDataPoints: false,
+  showLine: true,
+  lineWidth: 2.5,
   gridColor: '#F1F5F9',
   axisColor: '#CBD5E1',
+  backgroundColor: '#FFFFFF',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif',
+  titleFont: '20px',
+  labelFont: '12px',
+  valueFont: '11px',
+  animProgress: 0,
+  animating: true,
+  hiddenCurves: new Set(), // curves hidden from view
 }
 
-// ==================== CANVAS SETUP ====================
+// ==================== CANVAS ====================
 const canvas = document.getElementById('chart')
 const ctx = canvas.getContext('2d')
 const tooltip = document.getElementById('tooltip')
 
+const DURATIONS = Array.from({ length: 21 }, (_, i) => i * 5) // 0, 5, 10, ..., 100
+
 function getChartSize() {
   const container = document.getElementById('chart-container')
-  const cw = container.clientWidth - 60
-  const ch = container.clientHeight - 60
-  const minWidth = 600
-  const minHeight = 450
+  const cw = container.clientWidth - 40
+  const ch = container.clientHeight - 40
   return {
-    width: Math.max(minWidth, Math.min(cw, 1000)),
-    height: Math.max(minHeight, Math.min(ch, 700)),
+    width: Math.max(600, Math.min(cw, 1100)),
+    height: Math.max(420, Math.min(ch, 650)),
   }
 }
 
 // ==================== DRAWING ====================
-let animProgress = 1
-let animFrame = null
+let drawTimer = null
+function scheduleDraw() { if (drawTimer) clearTimeout(drawTimer); drawTimer = setTimeout(draw, 30) }
 
-function draw(progress = 1) {
+function draw() {
   const { width, height } = getChartSize()
   const dpr = window.devicePixelRatio || 1
-
   canvas.width = width * dpr
   canvas.height = height * dpr
   canvas.style.width = width + 'px'
   canvas.style.height = height + 'px'
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+  const pad = { top: 55, right: 50, bottom: 65, left: 60 }
+  const chartW = width - pad.left - pad.right
+  const chartH = height - pad.top - pad.bottom
 
   // Background
   ctx.fillStyle = state.backgroundColor
@@ -77,91 +148,57 @@ function draw(progress = 1) {
   roundRect(ctx, 0, 0, width, height, 12)
   ctx.fill()
 
-  const p = state.chartPadding
-  const chartW = width - p.left - p.right
-  const chartH = height - p.top - p.bottom
-
   // Title
-  if (state.chartTitle) {
-    ctx.font = `bold ${state.titleFont} ${state.fontFamily}`
-    ctx.fillStyle = '#1E293B'
-    ctx.textAlign = 'center'
-    ctx.fillText(state.chartTitle, width / 2, 32)
-  }
+  ctx.font = `bold ${state.titleFont} ${state.fontFamily}`
+  ctx.fillStyle = '#1E293B'
+  ctx.textAlign = 'center'
+  ctx.fillText(state.chartTitle, width / 2, 28)
 
-  // Y-axis title
-  if (state.yAxisTitle) {
-    ctx.save()
-    ctx.font = `${state.labelFont} ${state.fontFamily}`
-    ctx.fillStyle = '#64748B'
-    ctx.textAlign = 'center'
-    ctx.translate(18, p.top + chartH / 2)
-    ctx.rotate(-Math.PI / 2)
-    ctx.fillText(state.yAxisTitle, 0, 0)
-    ctx.restore()
-  }
+  // Determine which curves to show
+  const visibleCurves = P6_CURVES.filter((_, i) => {
+    if (state.mode === 'single') return i === state.selectedCurve
+    return state.selectedCurves.has(i)
+  }).filter((_, i, arr) => {
+    // filter out hidden
+    const origIdx = state.mode === 'single'
+      ? state.selectedCurve
+      : [...state.selectedCurves][i]
+    return !state.hiddenCurves.has(origIdx)
+  })
 
-  // Legend
-  if (state.legendPosition === 'top' && state.data.length > 0) {
-    let lx = width / 2 - (state.data.length * 80) / 2
-    ctx.font = `${state.labelFont} ${state.fontFamily}`
-    for (let i = 0; i < state.data.length; i++) {
-      ctx.fillStyle = state.colors[i % state.colors.length]
-      ctx.beginPath()
-      roundRect(ctx, lx, 14, 12, 12, 3)
-      ctx.fill()
-      ctx.fillStyle = '#475569'
-      ctx.textAlign = 'left'
-      ctx.fillText(state.data[i].label, lx + 16, 24)
-      lx += 80
-    }
-  } else if (state.legendPosition === 'bottom') {
-    let lx = width / 2 - (state.data.length * 80) / 2
-    ctx.font = `${state.labelFont} ${state.fontFamily}`
-    for (let i = 0; i < state.data.length; i++) {
-      ctx.fillStyle = state.colors[i % state.colors.length]
-      ctx.beginPath()
-      roundRect(ctx, lx, height - 30, 12, 12, 3)
-      ctx.fill()
-      ctx.fillStyle = '#475569'
-      ctx.textAlign = 'left'
-      ctx.fillText(state.data[i].label, lx + 16, height - 20)
-      lx += 80
-    }
-  }
+  // Map visible curve data back to original indices
+  const visibleOrigIndices = state.mode === 'single'
+    ? [state.selectedCurve].filter(i => !state.hiddenCurves.has(i))
+    : [...state.selectedCurves].filter(i => !state.hiddenCurves.has(i))
 
-  // Calculate max value
-  const rawMax = Math.max(...state.data.map(d => d.value))
-  const maxVal = state.maxValue || Math.ceil(rawMax * 1.15)
-  const step = maxVal / state.gridLines
+  // Axes
+  ctx.strokeStyle = state.axisColor
+  ctx.lineWidth = 1.5
+  ctx.beginPath()
+  ctx.moveTo(pad.left, pad.top)
+  ctx.lineTo(pad.left, pad.top + chartH)
+  ctx.lineTo(pad.left + chartW, pad.top + chartH)
+  ctx.stroke()
 
-  // Grid lines
+  // Grid
   if (state.showGrid) {
+    const gridSteps = 10
     ctx.strokeStyle = state.gridColor
     ctx.lineWidth = 1
     ctx.font = `${state.labelFont} ${state.fontFamily}`
     ctx.fillStyle = '#94A3B8'
     ctx.textAlign = 'right'
+    ctx.textBaseline = 'middle'
 
-    for (let i = 0; i <= state.gridLines; i++) {
-      const y = p.top + chartH - (i / state.gridLines) * chartH
+    for (let i = 0; i <= gridSteps; i++) {
+      const y = pad.top + chartH - (i / gridSteps) * chartH
       ctx.beginPath()
-      ctx.moveTo(p.left, y)
-      ctx.lineTo(p.left + chartW, y)
+      ctx.moveTo(pad.left, y)
+      ctx.lineTo(pad.left + chartW, y)
       ctx.stroke()
-      const val = Math.round(step * i)
-      ctx.fillText(formatNumber(val), p.left - 10, y + 4)
+      ctx.fillText((i * 10).toString(), pad.left - 10, y)
     }
   }
-
-  // Axes
-  ctx.strokeStyle = state.axisColor
-  ctx.lineWidth = 2
-  ctx.beginPath()
-  ctx.moveTo(p.left, p.top)
-  ctx.lineTo(p.left, p.top + chartH)
-  ctx.lineTo(p.left + chartW, p.top + chartH)
-  ctx.stroke()
 
   // X-axis labels
   ctx.font = `${state.labelFont} ${state.fontFamily}`
@@ -169,131 +206,144 @@ function draw(progress = 1) {
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
 
-  const barTotal = state.barWidth + state.barGap
-  const totalWidth = state.data.length * barTotal - state.barGap
-  const startX = p.left + (chartW - totalWidth) / 2 + state.barWidth / 2
-
-  state.data.forEach((d, i) => {
-    const x = startX + i * barTotal - state.barWidth / 2
-    const y = p.top + chartH
-    ctx.textBaseline = 'top'
-    ctx.fillText(d.label, x + state.barWidth / 2, y + 8)
+  DURATIONS.forEach((d, i) => {
+    const x = pad.left + (i / 20) * chartW
+    ctx.fillText(d + '%', x, pad.top + chartH + 10)
   })
 
-  // Bars
-  ctx.textBaseline = 'bottom'
-  state.data.forEach((d, i) => {
-    const x = startX + i * barTotal - state.barWidth / 2
-    const barH = (d.value / maxVal) * chartH * progress
-    const y = p.top + chartH - barH
+  // X axis title
+  ctx.font = `${state.labelFont} ${state.fontFamily}`
+  ctx.fillStyle = '#64748B'
+  ctx.textAlign = 'center'
+  ctx.fillText(state.xAxisTitle, pad.left + chartW / 2, height - 12)
 
-    const color = state.colors[i % state.colors.length]
+  // Y axis title
+  ctx.save()
+  ctx.font = `${state.labelFont} ${state.fontFamily}`
+  ctx.fillStyle = '#64748B'
+  ctx.textAlign = 'center'
+  ctx.translate(16, pad.top + chartH / 2)
+  ctx.rotate(-Math.PI / 2)
+  ctx.fillText(state.yAxisTitle, 0, 0)
+  ctx.restore()
 
-    // Gradient
-    if (state.gradient) {
-      const grad = ctx.createLinearGradient(0, p.top + chartH, 0, y)
-      grad.addColorStop(0, color + '88')
-      grad.addColorStop(1, color)
-      ctx.fillStyle = grad
-    } else {
-      ctx.fillStyle = color
-    }
+  // Draw curves
+  const plotPoints = []
+  visibleOrigIndices.forEach((origIdx, i) => {
+    const curve = P6_CURVES[origIdx]
+    const cumValues = cumulative(curve.values)
+    const progress = state.animProgress
+    const color = curve.color
 
-    // Bar shape
-    if (state.barShape === 'rounded') {
-      const r = Math.min(state.barRadius, state.barWidth / 2)
+    ctx.strokeStyle = color
+    ctx.lineWidth = state.lineWidth
+    ctx.lineJoin = 'round'
+    ctx.lineCap = 'round'
+
+    if (state.showLine) {
       ctx.beginPath()
-      ctx.moveTo(x, p.top + chartH)
-      ctx.lineTo(x, y + r)
-      ctx.quadraticCurveTo(x, y, x + r, y)
-      ctx.lineTo(x + state.barWidth - r, y)
-      ctx.quadraticCurveTo(x + state.barWidth, y, x + state.barWidth, y + r)
-      ctx.lineTo(x + state.barWidth, p.top + chartH)
-      ctx.closePath()
-      ctx.fill()
-    } else {
-      ctx.fillRect(x, y, state.barWidth, barH)
+      cumValues.forEach((v, j) => {
+        const x = pad.left + (j / 20) * chartW
+        const y = pad.top + chartH - (v / 100) * chartH * progress
+        if (j === 0) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      })
+      ctx.stroke()
     }
 
-    // Value label
-    if (state.showValue) {
-      ctx.font = `bold ${state.valueFont} ${state.fontFamily}`
-      ctx.fillStyle = '#1E293B'
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'bottom'
-      ctx.fillText(formatNumber(d.value), x + state.barWidth / 2, y - 6)
+    // Data points
+    if (state.showDataPoints) {
+      cumValues.forEach((v, j) => {
+        const x = pad.left + (j / 20) * chartW
+        const y = pad.top + chartH - (v / 100) * chartH * progress
+        ctx.beginPath()
+        ctx.arc(x, y, 3, 0, Math.PI * 2)
+        ctx.fillStyle = color
+        ctx.fill()
+        ctx.strokeStyle = '#fff'
+        ctx.lineWidth = 1.5
+        ctx.stroke()
+      })
     }
+
+    // Store for tooltip
+    cumValues.forEach((v, j) => {
+      const x = pad.left + (j / 20) * chartW
+      const y = pad.top + chartH - (v / 100) * chartH * progress
+      plotPoints.push({ x, y, curveName: curve.name, duration: DURATIONS[j], value: v.toFixed(2), color })
+    })
   })
 
-  // Store bar rects for hover
-  canvas._bars = state.data.map((d, i) => {
-    const x = startX + i * barTotal - state.barWidth / 2
-    const barH = (d.value / maxVal) * chartH * progress
-    const y = p.top + chartH - barH
-    return { x, y, width: state.barWidth, height: barH, data: d, color: state.colors[i % state.colors.length] }
-  })
-}
-
-function formatNumber(n) {
-  if (n >= 10000) return (n / 10000).toFixed(1).replace(/\.0$/, '') + '万'
-  return n.toLocaleString()
+  canvas._plotPoints = plotPoints
 }
 
 function roundRect(ctx, x, y, w, h, r) {
-  if (typeof r === 'number') r = { tl: r, tr: r, br: r, bl: r }
-  ctx.moveTo(x + r.tl, y)
-  ctx.lineTo(x + w - r.tr, y)
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r.tr)
-  ctx.lineTo(x + w, y + h - r.br)
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r.br, y + h)
-  ctx.lineTo(x + r.bl, y + h)
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r.bl)
-  ctx.lineTo(x, y + r.tl)
-  ctx.quadraticCurveTo(x, y, x + r.tl, y)
+  ctx.moveTo(x + r, y)
+  ctx.lineTo(x + w - r, y)
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r)
+  ctx.lineTo(x + w, y + h - r)
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h)
+  ctx.lineTo(x + r, y + h)
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r)
+  ctx.lineTo(x, y + r)
+  ctx.quadraticCurveTo(x, y, x + r, y)
 }
 
-function animate() {
-  if (!state.animation) {
-    draw(1)
-    return
+// ==================== ANIMATION ====================
+let animFrame = null
+let animStart = null
+
+function animate(timestamp) {
+  if (!state.animating) { draw(); return }
+  if (!animStart) animStart = timestamp
+  const elapsed = timestamp - animStart
+  const duration = 1200
+  state.animProgress = Math.min(1, elapsed / duration)
+  const eased = 1 - Math.pow(1 - state.animProgress, 3)
+  draw()
+  if (state.animProgress < 1) {
+    animFrame = requestAnimationFrame(animate)
+  } else {
+    state.animProgress = 1
   }
-  animProgress = 0
+}
+
+function startAnimation() {
+  state.animProgress = 0
+  animStart = null
   if (animFrame) cancelAnimationFrame(animFrame)
-  const duration = 800
-  const start = performance.now()
-  function step(now) {
-    animProgress = Math.min(1, (now - start) / duration)
-    const eased = 1 - Math.pow(1 - animProgress, 3)
-    draw(eased)
-    if (animProgress < 1) animFrame = requestAnimationFrame(step)
-  }
-  animFrame = requestAnimationFrame(step)
+  animFrame = requestAnimationFrame(animate)
 }
 
-// ==================== HOVER / TOOLTIP ====================
+// ==================== TOOLTIP ====================
 canvas.addEventListener('mousemove', (e) => {
   const rect = canvas.getBoundingClientRect()
   const mx = e.clientX - rect.left
   const my = e.clientY - rect.top
-  const bars = canvas._bars || []
+  const pts = canvas._plotPoints || []
 
-  let found = false
-  for (const bar of bars) {
-    if (mx >= bar.x && mx <= bar.x + bar.width && my >= bar.y && my <= bar.y + bar.height) {
-      tooltip.innerHTML = `<strong>${bar.data.label}</strong><br/>${bar.data.value}`
-      tooltip.classList.add('visible')
-      let tx = e.clientX - rect.left + 16
-      let ty = e.clientY - rect.top - 10
-      if (tx + 120 > rect.width) tx = e.clientX - rect.left - 130
-      if (ty < 0) ty = 10
-      tooltip.style.left = tx + 'px'
-      tooltip.style.top = ty + 'px'
-      canvas.style.cursor = 'pointer'
-      found = true
-      break
+  let closest = null
+  let minDist = 20 // pixel threshold
+
+  for (const pt of pts) {
+    const dist = Math.hypot(pt.x - mx, pt.y - my)
+    if (dist < minDist) {
+      minDist = dist
+      closest = pt
     }
   }
-  if (!found) {
+
+  if (closest) {
+    tooltip.innerHTML = `<strong>${closest.curveName}</strong><br/>工期: ${closest.duration}%<br/>累计: ${closest.value}%`
+    tooltip.classList.add('visible')
+    let tx = e.clientX - rect.left + 16
+    let ty = e.clientY - rect.top - 10
+    if (tx + 160 > rect.width) tx = e.clientX - rect.left - 170
+    if (ty < 0) ty = 10
+    tooltip.style.left = tx + 'px'
+    tooltip.style.top = ty + 'px'
+    canvas.style.cursor = 'pointer'
+  } else {
     tooltip.classList.remove('visible')
     canvas.style.cursor = 'default'
   }
@@ -308,63 +358,153 @@ function buildControls() {
   const container = document.getElementById('controls')
   container.innerHTML = ''
 
+  // Mode selector
+  container.appendChild(createGroup('显示模式', [
+    createModeButtons(),
+  ]))
+
+  // Single curve selector
+  container.appendChild(createGroup('曲线选择', [
+    createSingleCurveSelector(),
+  ]))
+
+  // Multi curve quick select
+  if (state.mode === 'multi') {
+    container.appendChild(createGroup('快速选择（多选）', [
+      createMultiCurveSelector(),
+    ]))
+  }
+
   // Chart settings
   container.appendChild(createGroup('图表设置', [
     createTextRow('标题', 'chartTitle', state.chartTitle),
-    createTextRow('Y轴标题', 'yAxisTitle', state.yAxisTitle),
-    createSelectRow('图例位置', 'legendPosition', [
-      { value: 'top', label: '顶部' },
-      { value: 'bottom', label: '底部' },
-      { value: 'none', label: '不显示' },
-    ], state.legendPosition),
-  ]))
-
-  // Bar settings
-  container.appendChild(createGroup('柱状图设置', [
-    createRangeRow('柱宽', 'barWidth', 20, 120, state.barWidth),
-    createRangeRow('柱间距', 'barGap', 5, 60, state.barGap),
-    createRangeRow('圆角', 'barRadius', 0, 25, state.barRadius),
-    createSelectRow('柱形样式', 'barShape', [
-      { value: 'rounded', label: '圆角' },
-      { value: 'square', label: '方形' },
-    ], state.barShape),
-    createColorRow('背景色', 'backgroundColor', state.backgroundColor),
-  ]))
-
-  // Colors
-  container.appendChild(createGroup('颜色设置', [
-    createCheckboxRow('使用渐变', 'gradient', state.gradient),
-    createColorRow('网格线', 'gridColor', state.gridColor),
-    createColorRow('坐标轴', 'axisColor', state.axisColor),
+    createTextRow('X 轴标题', 'xAxisTitle', state.xAxisTitle),
+    createTextRow('Y 轴标题', 'yAxisTitle', state.yAxisTitle),
   ]))
 
   // Display
   container.appendChild(createGroup('显示选项', [
-    createCheckboxRow('显示数值标签', 'showValue', state.showValue),
     createCheckboxRow('显示网格线', 'showGrid', state.showGrid),
-    createCheckboxRow('动画效果', 'animation', state.animation),
-    createRangeRow('网格线数', 'gridLines', 2, 10, state.gridLines),
-    createNumberRow('最大值 (空=自动)', 'maxValue', state.maxValue),
+    createCheckboxRow('显示数据点', 'showDataPoints', state.showDataPoints),
+    createCheckboxRow('显示连线', 'showLine', state.showLine),
+    createCheckboxRow('播放动画', 'animating', state.animating),
   ]))
 
-  // Font
-  container.appendChild(createGroup('字体设置', [
-    createRangeRow('标题字号', 'titleFont', 14, 36, parseInt(state.titleFont)),
-    createRangeRow('标签字号', 'labelFont', 10, 20, parseInt(state.labelFont)),
-    createRangeRow('数值字号', 'valueFont', 10, 20, parseInt(state.valueFont)),
+  // Line width
+  container.appendChild(createGroup('样式设置', [
+    createRangeRow('线宽', 'lineWidth', 1, 6, state.lineWidth),
+    createColorRow('背景色', 'backgroundColor', state.backgroundColor),
+    createColorRow('网格线', 'gridColor', state.gridColor),
+    createColorRow('坐标轴', 'axisColor', state.axisColor),
   ]))
 
-  // Data
-  buildDataSection(container)
+  // Data viewer
+  buildDataViewer(container)
 }
 
-function createGroup(title, rows) {
+function createModeButtons() {
   const div = document.createElement('div')
-  div.className = 'control-group'
-  const h3 = document.createElement('h3')
-  h3.textContent = title
-  div.appendChild(h3)
-  rows.forEach(r => div.appendChild(r))
+  div.style.display = 'flex'
+  div.style.gap = '6px'
+
+  const singleBtn = document.createElement('button')
+  singleBtn.className = 'curve-btn' + (state.mode === 'single' ? ' active' : '')
+  singleBtn.textContent = '单曲线'
+  singleBtn.addEventListener('click', () => {
+    state.mode = 'single'
+    buildControls()
+    startAnimation()
+  })
+
+  const multiBtn = document.createElement('button')
+  multiBtn.className = 'curve-btn' + (state.mode === 'multi' ? ' active' : '')
+  multiBtn.textContent = '多曲线对比'
+  multiBtn.addEventListener('click', () => {
+    state.mode = 'multi'
+    if (state.selectedCurves.size === 0) {
+      state.selectedCurves = new Set([0])
+    }
+    buildControls()
+    startAnimation()
+  })
+
+  div.appendChild(singleBtn)
+  div.appendChild(multiBtn)
+  return div
+}
+
+function createSingleCurveSelector() {
+  const div = document.createElement('div')
+  div.className = 'curve-selector'
+
+  P6_CURVES.forEach((curve, i) => {
+    const btn = document.createElement('button')
+    btn.className = 'curve-btn' + (state.selectedCurve === i ? ' active' : '')
+    btn.innerHTML = `<span class="color-dot" style="background:${curve.color}"></span>${curve.shortName}`
+    btn.addEventListener('click', () => {
+      state.selectedCurve = i
+      state.hiddenCurves.clear()
+      buildControls()
+      startAnimation()
+    })
+    div.appendChild(btn)
+  })
+
+  return div
+}
+
+function createMultiCurveSelector() {
+  const div = document.createElement('div')
+  div.className = 'multi-selector'
+
+  P6_CURVES.forEach((curve, i) => {
+    const btn = document.createElement('button')
+    btn.className = 'curve-btn' + (state.selectedCurves.has(i) ? ' active' : '')
+    btn.textContent = curve.shortName
+    btn.addEventListener('click', () => {
+      if (state.selectedCurves.has(i)) {
+        if (state.selectedCurves.size > 1) state.selectedCurves.delete(i)
+      } else {
+        state.selectedCurves.add(i)
+      }
+      buildControls()
+      startAnimation()
+    })
+    div.appendChild(btn)
+  })
+
+  // Select all / deselect all
+  const row = document.createElement('div')
+  row.style.marginTop = '8px'
+  row.style.display = 'flex'
+  row.style.gap = '6px'
+
+  const selectAll = document.createElement('button')
+  selectAll.className = 'btn'
+  selectAll.style.fontSize = '10px'
+  selectAll.style.padding = '3px 8px'
+  selectAll.textContent = '全选'
+  selectAll.addEventListener('click', () => {
+    state.selectedCurves = new Set(P6_CURVES.map((_, i) => i))
+    buildControls()
+    startAnimation()
+  })
+
+  const deselectAll = document.createElement('button')
+  deselectAll.className = 'btn'
+  deselectAll.style.fontSize = '10px'
+  deselectAll.style.padding = '3px 8px'
+  deselectAll.textContent = '清空'
+  deselectAll.addEventListener('click', () => {
+    state.selectedCurves = new Set()
+    buildControls()
+    startAnimation()
+  })
+
+  row.appendChild(selectAll)
+  row.appendChild(deselectAll)
+  div.appendChild(row)
+
   return div
 }
 
@@ -376,31 +516,10 @@ function createTextRow(label, key, value) {
   return row
 }
 
-function createNumberRow(label, key, value) {
-  const row = document.createElement('div')
-  row.className = 'control-row'
-  row.innerHTML = `<label>${label}</label><input type="number" value="${value ?? ''}" placeholder="自动" />`
-  row.querySelector('input').addEventListener('input', (e) => {
-    const v = e.target.value
-    state[key] = v === '' ? null : Number(v)
-    scheduleDraw()
-  })
-  return row
-}
-
-function createSelectRow(label, key, options, value) {
-  const row = document.createElement('div')
-  row.className = 'control-row'
-  const opts = options.map(o => `<option value="${o.value}" ${o.value === value ? 'selected' : ''}>${o.label}</option>`).join('')
-  row.innerHTML = `<label>${label}</label><select>${opts}</select>`
-  row.querySelector('select').addEventListener('change', (e) => { state[key] = e.target.value; scheduleDraw() })
-  return row
-}
-
 function createRangeRow(label, key, min, max, value) {
   const row = document.createElement('div')
   row.className = 'control-row'
-  row.innerHTML = `<label>${label}</label><input type="range" min="${min}" max="${max}" value="${value}" /><span class="range-value">${value}</span>`
+  row.innerHTML = `<label>${label}</label><input type="range" min="${min}" max="${max}" step="0.5" value="${value}" /><span class="range-value">${value}</span>`
   const input = row.querySelector('input')
   const span = row.querySelector('.range-value')
   input.addEventListener('input', (e) => {
@@ -424,167 +543,87 @@ function createCheckboxRow(label, key, value) {
   const row = document.createElement('div')
   row.className = 'checkbox-row'
   row.innerHTML = `<input type="checkbox" ${value ? 'checked' : ''} /><label>${label}</label>`
-  row.querySelector('input').addEventListener('change', (e) => { state[key] = e.target.checked; scheduleDraw() })
+  row.querySelector('input').addEventListener('change', (e) => {
+    state[key] = e.target.checked
+    if (key === 'animating' && e.target.checked) startAnimation()
+    else if (key === 'animating' && !e.target.checked) { state.animProgress = 1; draw() }
+    else scheduleDraw()
+  })
   return row
 }
 
-function buildDataSection(container) {
+function createGroup(title, rows) {
   const div = document.createElement('div')
   div.className = 'control-group'
-  div.innerHTML = '<h3>数据编辑</h3>'
+  const h3 = document.createElement('h3')
+  h3.textContent = title
+  div.appendChild(h3)
+  rows.forEach(r => div.appendChild(r))
+  return div
+}
+
+// ==================== DATA VIEWER ====================
+function buildDataViewer(container) {
+  const div = document.createElement('div')
+  div.className = 'control-group'
+  div.innerHTML = '<h3>原始数据表</h3>'
+
+  const viewer = document.createElement('div')
+  viewer.className = 'data-viewer'
 
   const table = document.createElement('table')
-  table.className = 'data-table'
-  table.innerHTML = `
-    <thead>
-      <tr>
-        <th style="width:40%">标签</th>
-        <th style="width:30%">值</th>
-        <th style="width:25%">颜色</th>
-        <th style="width:5%"></th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  `
-  const tbody = table.querySelector('tbody')
+  let theadHTML = '<thead><tr><th style="width:50px">工期%</th>'
+  P6_CURVES.forEach(c => { theadHTML += `<th style="color:${c.color}">${c.shortName}</th>` })
+  theadHTML += '</tr></thead>'
+  table.innerHTML = theadHTML
 
-  state.data.forEach((d, i) => {
+  const tbody = document.createElement('tbody')
+  DURATIONS.forEach((d, i) => {
     const tr = document.createElement('tr')
-    const color = state.colors[i % state.colors.length]
-    tr.innerHTML = `
-      <td><input type="text" value="${escapeHtml(d.label)}" /></td>
-      <td><input type="number" value="${d.value}" /></td>
-      <td><input type="color" class="color-input" value="${color}" /></td>
-      <td><button class="btn-remove" title="删除">×</button></td>
-    `
-    tr.querySelector('input[type="text"]').addEventListener('input', (e) => {
-      state.data[i].label = e.target.value
-      scheduleDraw()
-    })
-    tr.querySelector('input[type="number"]').addEventListener('input', (e) => {
-      state.data[i].value = Number(e.target.value) || 0
-      scheduleDraw()
-    })
-    tr.querySelector('.color-input').addEventListener('input', (e) => {
-      state.colors[i] = e.target.value
-      scheduleDraw()
-    })
-    tr.querySelector('.btn-remove').addEventListener('click', () => {
-      if (state.data.length <= 1) return
-      state.data.splice(i, 1)
-      state.colors.splice(i, 1)
-      buildDataSection(container)
-      scheduleDraw()
-    })
+    let html = `<td>${d}%</td>`
+    P6_CURVES.forEach(c => { html += `<td>${c.values[i].toFixed(2)}</td>` })
+    tr.innerHTML = html
     tbody.appendChild(tr)
   })
 
-  div.appendChild(table)
-
-  const addBtn = document.createElement('button')
-  addBtn.className = 'btn btn-add'
-  addBtn.textContent = '+ 添加数据项'
-  addBtn.addEventListener('click', () => {
-    const idx = state.data.length
-    state.data.push({ label: `项目${idx + 1}`, value: 100 })
-    const hue = (idx * 360 / 12) % 360
-    state.colors.push(hslToHex(hue, 70, 55))
-    buildDataSection(container)
-    scheduleDraw()
-  })
-  div.appendChild(addBtn)
-
-  // Presets
-  const presetDiv = document.createElement('div')
-  presetDiv.style.marginTop = '16px'
-  presetDiv.innerHTML = '<h3 style="margin-bottom:10px">快速预设</h3>'
-
-  const presetRow = document.createElement('div')
-  presetRow.style.display = 'flex'
-  presetRow.style.gap = '6px'
-  presetRow.style.flexWrap = 'wrap'
-
-  const presets = [
-    { name: '销售数据', data: [
-      { label: '一月', value: 120 }, { label: '二月', value: 200 }, { label: '三月', value: 150 },
-      { label: '四月', value: 280 }, { label: '五月', value: 230 }, { label: '六月', value: 310 },
-    ]},
-    { name: '季度数据', data: [
-      { label: 'Q1', value: 450 }, { label: 'Q2', value: 620 }, { label: 'Q3', value: 580 }, { label: 'Q4', value: 710 },
-    ]},
-    { name: '排名数据', data: [
-      { label: '产品A', value: 95 }, { label: '产品B', value: 82 }, { label: '产品C', value: 74 },
-      { label: '产品D', value: 68 }, { label: '产品E', value: 55 }, { label: '产品F', value: 43 },
-    ]},
-  ]
-
-  presets.forEach(p => {
-    const btn = document.createElement('button')
-    btn.className = 'btn'
-    btn.textContent = p.name
-    btn.style.fontSize = '12px'
-    btn.style.padding = '5px 10px'
-    btn.addEventListener('click', () => {
-      state.data = JSON.parse(JSON.stringify(p.data))
-      state.colors = []
-      p.data.forEach((_, i) => {
-        const hue = (i * 360 / Math.max(p.data.length, 1)) % 360
-        state.colors.push(hslToHex(hue, 70, 55))
-      })
-      buildDataSection(container)
-      scheduleDraw()
-    })
-    presetRow.appendChild(btn)
-  })
-
-  presetDiv.appendChild(presetRow)
-  div.appendChild(presetDiv)
-
+  table.appendChild(tbody)
+  viewer.appendChild(table)
+  div.appendChild(viewer)
   container.appendChild(div)
 }
 
-function hslToHex(h, s, l) {
-  s /= 100
-  l /= 100
-  const a = s * Math.min(l, 1 - l)
-  const f = n => {
-    const k = (n + h / 30) % 12
-    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)
-    return Math.round(255 * color).toString(16).padStart(2, '0')
-  }
-  return `#${f(0)}${f(8)}${f(4)}`
-}
-
-function escapeHtml(str) {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-}
-
 // ==================== EXPORT ====================
-let drawTimer = null
-function scheduleDraw() {
-  if (drawTimer) clearTimeout(drawTimer)
-  drawTimer = setTimeout(animate, 30)
-}
-
 document.getElementById('export-png').addEventListener('click', () => {
   const link = document.createElement('a')
-  link.download = 'bar-chart.png'
+  link.download = 'p6-resource-curve.png'
   link.href = canvas.toDataURL('image/png')
   link.click()
 })
 
-document.getElementById('export-svg').addEventListener('click', () => {
-  const svg = canvasToSVG()
-  const blob = new Blob([svg], { type: 'image/svg+xml' })
+document.getElementById('export-csv').addEventListener('click', () => {
+  let csv = '工期%,' + P6_CURVES.map(c => c.name).join(',') + '\n'
+  DURATIONS.forEach((d, i) => {
+    csv += `${d}%`
+    P6_CURVES.forEach(c => { csv += `,${c.values[i].toFixed(2)}` })
+    csv += '\n'
+  })
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' })
   const link = document.createElement('a')
-  link.download = 'bar-chart.svg'
+  link.download = 'p6-resource-curve.csv'
   link.href = URL.createObjectURL(blob)
   link.click()
   URL.revokeObjectURL(link.href)
 })
 
 document.getElementById('print-data').addEventListener('click', () => {
-  const text = state.data.map(d => `${d.label}: ${d.value}`).join('\n')
+  let text = '工期%'
+  P6_CURVES.forEach(c => { text += '\t' + c.shortName })
+  text += '\n'
+  DURATIONS.forEach((d, i) => {
+    text += `${d}%`
+    P6_CURVES.forEach(c => { text += '\t' + c.values[i].toFixed(2) })
+    text += '\n'
+  })
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById('print-data')
     btn.textContent = '已复制!'
@@ -594,63 +633,13 @@ document.getElementById('print-data').addEventListener('click', () => {
   })
 })
 
-function canvasToSVG() {
-  const { width, height } = getChartSize()
-  const p = state.chartPadding
-  const chartW = width - p.left - p.right
-  const chartH = height - p.top - p.bottom
-  const rawMax = Math.max(...state.data.map(d => d.value))
-  const maxVal = state.maxValue || Math.ceil(rawMax * 1.15)
-  const barTotal = state.barWidth + state.barGap
-  const totalWidth = state.data.length * barTotal - state.barGap
-  const startX = p.left + (chartW - totalWidth) / 2 + state.barWidth / 2
-
-  let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`
-  svg += `<rect width="${width}" height="${height}" fill="${state.backgroundColor}" rx="12"/>`
-
-  if (state.chartTitle) {
-    svg += `<text x="${width/2}" y="32" text-anchor="middle" font-size="22" font-weight="bold" font-family="${state.fontFamily}" fill="#1E293B">${escapeXml(state.chartTitle)}</text>`
-  }
-
-  const step = maxVal / state.gridLines
-  for (let i = 0; i <= state.gridLines; i++) {
-    const y = p.top + chartH - (i / state.gridLines) * chartH
-    svg += `<line x1="${p.left}" y1="${y}" x2="${p.left + chartW}" y2="${y}" stroke="${state.gridColor}" stroke-width="1"/>`
-    svg += `<text x="${p.left - 10}" y="${y + 4}" text-anchor="end" font-size="13" font-family="${state.fontFamily}" fill="#94A3B8">${formatNumber(Math.round(step * i))}</text>`
-  }
-
-  svg += `<line x1="${p.left}" y1="${p.top}" x2="${p.left}" y2="${p.top + chartH}" stroke="${state.axisColor}" stroke-width="2"/>`
-  svg += `<line x1="${p.left}" y1="${p.top + chartH}" x2="${p.left + chartW}" y2="${p.top + chartH}" stroke="${state.axisColor}" stroke-width="2"/>`
-
-  state.data.forEach((d, i) => {
-    const x = startX + i * barTotal - state.barWidth / 2
-    const barH = (d.value / maxVal) * chartH
-    const y = p.top + chartH - barH
-    const color = state.colors[i % state.colors.length]
-
-    if (state.barShape === 'rounded') {
-      const r = Math.min(state.barRadius, state.barWidth / 2)
-      svg += `<path d="M${x},${p.top + chartH} L${x},${y + r} Q${x},${y} ${x + r},${y} L${x + state.barWidth - r},${y} Q${x + state.barWidth},${y} ${x + state.barWidth},${y + r} L${x + state.barWidth},${p.top + chartH} Z" fill="${color}"/>`
-    } else {
-      svg += `<rect x="${x}" y="${y}" width="${state.barWidth}" height="${barH}" fill="${color}"/>`
-    }
-
-    if (state.showValue) {
-      svg += `<text x="${x + state.barWidth / 2}" y="${y - 6}" text-anchor="middle" font-size="12" font-weight="bold" font-family="${state.fontFamily}" fill="#1E293B">${formatNumber(d.value)}</text>`
-    }
-    svg += `<text x="${x + state.barWidth / 2}" y="${p.top + chartH + 20}" text-anchor="middle" font-size="13" font-family="${state.fontFamily}" fill="#475569">${escapeXml(d.label)}</text>`
-  })
-
-  svg += '</svg>'
-  return svg
-}
-
-function escapeXml(str) {
+// ==================== UTILS ====================
+function escapeHtml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
 // ==================== INIT ====================
 buildControls()
-animate()
+animate(performance.now())
 
 window.addEventListener('resize', scheduleDraw)
