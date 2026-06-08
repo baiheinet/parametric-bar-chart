@@ -2,100 +2,42 @@ import './style.css'
 
 // ==================== PRIMAVERA P6 12 CURVE DATA ====================
 const P6_CURVES = [
-  {
-    name: 'Linear 线性/均匀',
-    shortName: '线性',
-    color: '#4F46E5',
-    values: [4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76],
-  },
-  {
-    name: 'Front Loaded 前加载',
-    shortName: '前加载',
-    color: '#8B5CF6',
-    values: [39.60, 24.75, 14.85, 9.90, 4.95, 2.47, 0.99, 0.74, 0.49, 0.40, 0.30, 0.20, 0.15, 0.10, 0.05, 0.03, 0.02, 0.01, 0.00, 0.00, 0.00],
-  },
-  {
-    name: 'Back Loaded 后加载',
-    shortName: '后加载',
-    color: '#EC4899',
-    values: [0.00, 0.00, 0.00, 0.01, 0.02, 0.03, 0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.49, 0.74, 0.99, 2.47, 4.95, 9.90, 14.85, 24.75, 39.60],
-  },
-  {
-    name: 'Early Peak 早期峰值',
-    shortName: '早期峰值',
-    color: '#14B8A6',
-    values: [16.26, 13.01, 10.84, 8.67, 7.59, 6.50, 5.96, 5.42, 4.88, 4.34, 3.79, 3.25, 2.71, 2.17, 1.63, 1.08, 0.87, 0.54, 0.33, 0.16, 0.00],
-  },
-  {
-    name: 'Late Peak 晚期峰值',
-    shortName: '晚期峰值',
-    color: '#F59E0B',
-    values: [0.00, 0.16, 0.33, 0.54, 0.87, 1.08, 1.63, 2.17, 2.71, 3.25, 3.79, 4.34, 4.88, 5.42, 5.96, 6.50, 7.59, 8.67, 10.84, 13.01, 16.26],
-  },
-  {
-    name: 'Bell Shaped 钟形',
-    shortName: '钟形',
-    color: '#10B981',
-    values: [0.59, 1.18, 2.37, 4.14, 5.92, 8.28, 10.06, 11.24, 11.83, 11.24, 10.06, 8.28, 5.92, 4.14, 2.37, 1.18, 0.59, 0.37, 0.18, 0.06, 0.00],
-  },
-  {
-    name: 'Triangular 三角形',
-    shortName: '三角形',
-    color: '#EF4444',
-    values: [0.00, 1.00, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00, 8.00, 9.00, 10.00, 9.00, 8.00, 7.00, 6.00, 5.00, 4.00, 3.00, 2.00, 1.00, 0.00],
-  },
-  {
-    name: 'Trapezoidal 梯形',
-    shortName: '梯形',
-    color: '#3B82F6',
-    values: [1.25, 2.50, 3.75, 5.00, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 5.00, 3.75, 2.50, 1.25, 0.00],
-  },
-  {
-    name: 'At Start 在开始',
-    shortName: '在开始',
-    color: '#F97316',
-    values: [100.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
-  },
-  {
-    name: 'At Finish 在结束',
-    shortName: '在结束',
-    color: '#06B6D4',
-    values: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 100.00],
-  },
-  {
-    name: 'Double Peak 双峰值',
-    shortName: '双峰值',
-    color: '#A855F7',
-    values: [10.39, 7.79, 5.20, 2.60, 1.30, 0.65, 1.30, 2.60, 5.19, 7.79, 10.39, 7.79, 5.19, 2.60, 1.30, 0.65, 1.30, 2.60, 5.19, 7.79, 10.39],
-  },
-  {
-    name: 'Skewed Left 左偏/上升',
-    shortName: '左偏上升',
-    color: '#14B8A6',
-    values: [0.43, 0.87, 1.30, 1.73, 2.16, 2.60, 3.03, 3.46, 3.90, 4.33, 4.76, 5.19, 5.63, 6.06, 6.49, 6.93, 7.36, 7.79, 8.23, 8.66, 9.09],
-  },
+  { name: 'Linear 线性/均匀', shortName: '线性', color: '#4F46E5', values: [4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76, 4.76] },
+  { name: 'Front Loaded 前加载', shortName: '前加载', color: '#8B5CF6', values: [39.60, 24.75, 14.85, 9.90, 4.95, 2.47, 0.99, 0.74, 0.49, 0.40, 0.30, 0.20, 0.15, 0.10, 0.05, 0.03, 0.02, 0.01, 0.00, 0.00, 0.00] },
+  { name: 'Back Loaded 后加载', shortName: '后加载', color: '#EC4899', values: [0.00, 0.00, 0.00, 0.01, 0.02, 0.03, 0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.49, 0.74, 0.99, 2.47, 4.95, 9.90, 14.85, 24.75, 39.60] },
+  { name: 'Early Peak 早期峰值', shortName: '早期峰值', color: '#14B8A6', values: [16.26, 13.01, 10.84, 8.67, 7.59, 6.50, 5.96, 5.42, 4.88, 4.34, 3.79, 3.25, 2.71, 2.17, 1.63, 1.08, 0.87, 0.54, 0.33, 0.16, 0.00] },
+  { name: 'Late Peak 晚期峰值', shortName: '晚期峰值', color: '#F59E0B', values: [0.00, 0.16, 0.33, 0.54, 0.87, 1.08, 1.63, 2.17, 2.71, 3.25, 3.79, 4.34, 4.88, 5.42, 5.96, 6.50, 7.59, 8.67, 10.84, 13.01, 16.26] },
+  { name: 'Bell Shaped 钟形', shortName: '钟形', color: '#10B981', values: [0.59, 1.18, 2.37, 4.14, 5.92, 8.28, 10.06, 11.24, 11.83, 11.24, 10.06, 8.28, 5.92, 4.14, 2.37, 1.18, 0.59, 0.37, 0.18, 0.06, 0.00] },
+  { name: 'Triangular 三角形', shortName: '三角形', color: '#EF4444', values: [0.00, 1.00, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00, 8.00, 9.00, 10.00, 9.00, 8.00, 7.00, 6.00, 5.00, 4.00, 3.00, 2.00, 1.00, 0.00] },
+  { name: 'Trapezoidal 梯形', shortName: '梯形', color: '#3B82F6', values: [1.25, 2.50, 3.75, 5.00, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 6.25, 5.00, 3.75, 2.50, 1.25, 0.00] },
+  { name: 'At Start 在开始', shortName: '在开始', color: '#F97316', values: [100.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00] },
+  { name: 'At Finish 在结束', shortName: '在结束', color: '#06B6D4', values: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 100.00] },
+  { name: 'Double Peak 双峰值', shortName: '双峰值', color: '#A855F7', values: [10.39, 7.79, 5.20, 2.60, 1.30, 0.65, 1.30, 2.60, 5.19, 7.79, 10.39, 7.79, 5.19, 2.60, 1.30, 0.65, 1.30, 2.60, 5.19, 7.79, 10.39] },
+  { name: 'Skewed Left 左偏/上升', shortName: '左偏上升', color: '#14B8A6', values: [0.43, 0.87, 1.30, 1.73, 2.16, 2.60, 3.03, 3.46, 3.90, 4.33, 4.76, 5.19, 5.63, 6.06, 6.49, 6.93, 7.36, 7.79, 8.23, 8.66, 9.09] },
 ]
-
-// Compute cumulative values for S-curves
-function cumulative(arr) {
-  const result = []
-  let sum = 0
-  for (const v of arr) { sum += v; result.push(sum) }
-  return result
-}
 
 // ==================== STATE ====================
 const state = {
-  mode: 'single', // 'single' | 'multi'
-  selectedCurve: 0, // index for single mode
-  selectedCurves: new Set([0]), // set of indices for multi mode
-  chartTitle: 'Primavera P6 资源加载柱状图（累计百分比）',
-  xAxisTitle: '工期百分比（Duration %）',
-  yAxisTitle: '累计百分比（%）',
+  // Wizard steps: 'input' | 'select' | 'result'
+  step: 'input',
+  // Step 1 inputs
+  taskName: '',
+  durationCount: 12,
+  durationUnit: '天', // 天 | 周 | 月 | 季 | 年
+  domestic: true, // 国内/境外 (周的最后一天: 周日/周五)
+  totalCount: 1000,
+  // Step 2
+  selectedCurve: 0,
+  // Step 3 computed
+  periods: [], // { label, date, percentage, allocated }
+  chartTitle: '',
+  graphTitle: '资源加载柱状图',
   showGrid: true,
-  showDataPoints: false,
   gradientFill: true,
-  barWidth: 25,
+  showDataPoints: false,
+  animating: true,
+  animProgress: 0,
+  barShape: 'rounded',
   gridColor: '#F1F5F9',
   axisColor: '#CBD5E1',
   backgroundColor: '#FFFFFF',
@@ -103,17 +45,157 @@ const state = {
   titleFont: '20px',
   labelFont: '12px',
   valueFont: '11px',
-  animProgress: 0,
-  animating: true,
-  hiddenCurves: new Set(), // curves hidden from view
+  hideResult: false,
+}
+
+// ==================== DATE HELPERS ====================
+function addDays(date, days) {
+  const d = new Date(date)
+  d.setDate(d.getDate() + days)
+  return d
+}
+
+function addWeeks(date, weeks) {
+  return addDays(date, weeks * 7)
+}
+
+function addMonths(date, months) {
+  const d = new Date(date)
+  d.setMonth(d.getMonth() + months)
+  return d
+}
+
+function formatDate(date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+function getWeekEndDate(date, domestic) {
+  const d = new Date(date)
+  // domestic: Sunday=0, international: Friday=5
+  const targetDay = domestic ? 0 : 5
+  let daysToAdd = (targetDay - d.getDay() + 7) % 7
+  if (daysToAdd === 0 && d.getDay() !== targetDay) daysToAdd = 7
+  // If already the target day or before, go to that day
+  if (d.getDay() <= targetDay) {
+    daysToAdd = targetDay - d.getDay()
+  } else {
+    daysToAdd = 7 - (d.getDay() - targetDay)
+  }
+  return addDays(d, daysToAdd)
+}
+
+function getWeekLabel(startDate, weekIndex, domestic) {
+  const d = addWeeks(startDate, weekIndex)
+  const endDate = getWeekEndDate(d, domestic)
+  return formatDate(endDate)
+}
+
+function generatePeriods(startDateStr) {
+  const startDate = new Date(startDateStr)
+  const count = state.durationCount
+  const unit = state.durationUnit
+  const result = []
+
+  if (unit === '天') {
+    for (let i = 0; i < count; i++) {
+      const d = addDays(startDate, i)
+      result.push({ label: formatDate(d), date: formatDate(d), index: i })
+    }
+  } else if (unit === '周') {
+    for (let i = 0; i < count; i++) {
+      const label = getWeekLabel(startDate, i, state.domestic)
+      result.push({ label, date: label, index: i })
+    }
+  } else if (unit === '月') {
+    for (let i = 0; i < count; i++) {
+      const d = addMonths(startDate, i)
+      result.push({ label: `${d.getFullYear()}年${d.getMonth() + 1}月`, date: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`, index: i })
+    }
+  } else if (unit === '季') {
+    const quarters = ['第一季度', '第二季度', '第三季度', '第四季度']
+    const startQ = Math.floor(startDate.getMonth() / 3)
+    for (let i = 0; i < count; i++) {
+      const q = (startQ + i) % 4
+      const yearShift = Math.floor((startQ + i) / 4)
+      const year = startDate.getFullYear() + yearShift
+      result.push({ label: `${year}年${quarters[q]}`, date: `${year}-Q${q + 1}`, index: i })
+    }
+  } else if (unit === '年') {
+    for (let i = 0; i < count; i++) {
+      const year = startDate.getFullYear() + i
+      result.push({ label: `${year}年`, date: `${year}`, index: i })
+    }
+  }
+
+  return result
+}
+
+// Allocate total quantity based on curve percentages
+function allocateQuantity(curveValues, totalCount) {
+  const n = curveValues.length
+  const nonZeroIndices = []
+  curveValues.forEach((v, i) => { if (v > 0) nonZeroIndices.push(i) })
+
+  const nonZeroCount = Math.max(nonZeroIndices.length, n)
+
+  // Scale curve to have exactly nonZeroCount meaningful points
+  let scaledValues
+  if (nonZeroCount >= n) {
+    scaledValues = [...curveValues]
+  } else {
+    // Map the 21-point curve onto n periods using interpolation
+    scaledValues = []
+    for (let i = 0; i < n; i++) {
+      const srcIndex = (i / (n - 1)) * 20
+      const lo = Math.floor(srcIndex)
+      const hi = Math.min(lo + 1, 20)
+      const t = srcIndex - lo
+      scaledValues.push(curveValues[lo] * (1 - t) + curveValues[hi] * t)
+    }
+  }
+
+  // Normalize to percentages summing to 100
+  const sum = scaledValues.reduce((a, b) => a + b, 0)
+  const percentages = scaledValues.map(v => sum > 0 ? (v / sum) * 100 : 100 / n)
+
+  // Allocate: compute floor for each, then distribute remainder
+  const allocations = percentages.map(p => {
+    const raw = (p / 100) * totalCount
+    return Math.floor(raw)
+  })
+
+  // Distribute rounding difference
+  let allocatedSum = allocations.reduce((a, b) => a + b, 0)
+  let diff = Math.round(totalCount) - allocatedSum
+
+  // Give remainder to largest percentages first
+  const sorted = percentages.map((p, i) => ({ p, i })).sort((a, b) => b.p - a.p)
+  for (let k = 0; k < Math.abs(diff) && k < sorted.length; k++) {
+    const idx = sorted[k].i
+    if (diff > 0) allocations[idx]++
+    else if (allocations[idx] > 0) allocations[idx]--
+  }
+
+  // Build results
+  const periods = []
+  percentages.forEach((p, i) => {
+    periods.push({
+      label: '',
+      percentage: parseFloat(p.toFixed(2)),
+      allocated: allocations[i],
+    })
+  })
+
+  return periods
 }
 
 // ==================== CANVAS ====================
 const canvas = document.getElementById('chart')
 const ctx = canvas.getContext('2d')
 const tooltip = document.getElementById('tooltip')
-
-const DURATIONS = Array.from({ length: 21 }, (_, i) => i * 5) // 0, 5, 10, ..., 100
 
 function getChartSize() {
   const container = document.getElementById('chart-container')
@@ -130,6 +212,9 @@ let drawTimer = null
 function scheduleDraw() { if (drawTimer) clearTimeout(drawTimer); drawTimer = setTimeout(draw, 30) }
 
 function draw() {
+  const periods = state.periods
+  if (!periods.length) return
+
   const { width, height } = getChartSize()
   const dpr = window.devicePixelRatio || 1
   canvas.width = width * dpr
@@ -138,7 +223,7 @@ function draw() {
   canvas.style.height = height + 'px'
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-  const pad = { top: 55, right: 50, bottom: 65, left: 60 }
+  const pad = { top: 55, right: 50, bottom: 70, left: 60 }
   const chartW = width - pad.left - pad.right
   const chartH = height - pad.top - pad.bottom
 
@@ -152,24 +237,18 @@ function draw() {
   ctx.font = `bold ${state.titleFont} ${state.fontFamily}`
   ctx.fillStyle = '#1E293B'
   ctx.textAlign = 'center'
-  ctx.fillText(state.chartTitle, width / 2, 28)
+  ctx.fillText(state.graphTitle || '资源加载柱状图', width / 2, 28)
 
-  // Determine which curves to show
-  const visibleCurves = P6_CURVES.filter((_, i) => {
-    if (state.mode === 'single') return i === state.selectedCurve
-    return state.selectedCurves.has(i)
-  }).filter((_, i, arr) => {
-    // filter out hidden
-    const origIdx = state.mode === 'single'
-      ? state.selectedCurve
-      : [...state.selectedCurves][i]
-    return !state.hiddenCurves.has(origIdx)
-  })
+  // Subtitle with task info
+  if (state.taskName) {
+    ctx.font = `${state.labelFont} ${state.fontFamily}`
+    ctx.fillStyle = '#64748B'
+    ctx.fillText(`${state.taskName} | 总工程量: ${state.totalCount}`, width / 2, 50)
+  }
 
-  // Map visible curve data back to original indices
-  const visibleOrigIndices = state.mode === 'single'
-    ? [state.selectedCurve].filter(i => !state.hiddenCurves.has(i))
-    : [...state.selectedCurves].filter(i => !state.hiddenCurves.has(i))
+  // Max value
+  const maxVal = Math.max(...periods.map(p => p.allocated), 1)
+  const yMax = Math.ceil(maxVal * 1.15)
 
   // Axes
   ctx.strokeStyle = state.axisColor
@@ -182,7 +261,7 @@ function draw() {
 
   // Grid
   if (state.showGrid) {
-    const gridSteps = 10
+    const gridSteps = 5
     ctx.strokeStyle = state.gridColor
     ctx.lineWidth = 1
     ctx.font = `${state.labelFont} ${state.fontFamily}`
@@ -196,88 +275,109 @@ function draw() {
       ctx.moveTo(pad.left, y)
       ctx.lineTo(pad.left + chartW, y)
       ctx.stroke()
-      ctx.fillText((i * 10).toString(), pad.left - 10, y)
+      const val = Math.round((yMax / gridSteps) * i)
+      ctx.fillText(val.toLocaleString(), pad.left - 10, y)
     }
   }
 
-  // X-axis labels
-  ctx.font = `${state.labelFont} ${state.fontFamily}`
-  ctx.fillStyle = '#475569'
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'top'
-
-  DURATIONS.forEach((d, i) => {
-    const x = pad.left + (i / 20) * chartW
-    ctx.fillText(d + '%', x, pad.top + chartH + 10)
-  })
-
-  // X axis title
-  ctx.font = `${state.labelFont} ${state.fontFamily}`
-  ctx.fillStyle = '#64748B'
-  ctx.textAlign = 'center'
-  ctx.fillText(state.xAxisTitle, pad.left + chartW / 2, height - 12)
-
-  // Y axis title
-  ctx.save()
-  ctx.font = `${state.labelFont} ${state.fontFamily}`
-  ctx.fillStyle = '#64748B'
-  ctx.textAlign = 'center'
-  ctx.translate(16, pad.top + chartH / 2)
-  ctx.rotate(-Math.PI / 2)
-  ctx.fillText(state.yAxisTitle, 0, 0)
-  ctx.restore()
-
-  // Draw bars
+  // Bars
+  const n = periods.length
+  const barTotalW = chartW / n
+  const barW = Math.max(6, Math.min(40, barTotalW * 0.6))
   const plotPoints = []
-  const barWidth = Math.max(8, Math.min(40, chartW / 20 * 0.6))
 
-  visibleOrigIndices.forEach((origIdx) => {
-    const curve = P6_CURVES[origIdx]
-    const cumValues = cumulative(curve.values)
-    const progress = state.animProgress
-    const color = curve.color
+  const curve = P6_CURVES[state.selectedCurve]
+  const color = curve.color
 
-    // Gradient fill for bars
-    const gradient = ctx.createLinearGradient(0, pad.top + chartH, 0, pad.top)
-    gradient.addColorStop(0, color + '44')
-    gradient.addColorStop(1, color + 'cc')
+  periods.forEach((p, i) => {
+    const x = pad.left + i * barTotalW + barTotalW / 2
+    const barH = (p.allocated / yMax) * chartH * state.animProgress
+    const barTop = pad.top + chartH - barH
+    const barX = x - barW / 2
 
-    cumValues.forEach((v, j) => {
-      const x = pad.left + (j / 20) * chartW
-      const barH = (v / 100) * chartH * progress
-      const barTop = pad.top + chartH - barH
-      const barX = x - barWidth / 2
+    // Gradient
+    if (state.gradientFill) {
+      const gradient = ctx.createLinearGradient(0, pad.top + chartH, 0, barTop)
+      gradient.addColorStop(0, color + '44')
+      gradient.addColorStop(1, color + 'cc')
+      ctx.fillStyle = gradient
+    } else {
+      ctx.fillStyle = color
+    }
 
-      // Bar fill
-      if (state.gradientFill) {
-        ctx.fillStyle = gradient
-      } else {
-        ctx.fillStyle = color
-      }
-      ctx.fillRect(barX, barTop, barWidth, barH)
+    // Rounded bar
+    if (state.barShape === 'rounded') {
+      const r = Math.min(4, barW / 2)
+      ctx.beginPath()
+      ctx.moveTo(barX, pad.top + chartH)
+      ctx.lineTo(barX, barTop + r)
+      ctx.quadraticCurveTo(barX, barTop, barX + r, barTop)
+      ctx.lineTo(barX + barW - r, barTop)
+      ctx.quadraticCurveTo(barX + barW, barTop, barX + barW, barTop + r)
+      ctx.lineTo(barX + barW, pad.top + chartH)
+      ctx.closePath()
+      ctx.fill()
+    } else {
+      ctx.fillRect(barX, barTop, barW, barH)
+    }
 
-      // Bar border
-      if (!state.gradientFill) {
-        ctx.strokeStyle = color
-        ctx.lineWidth = 1
-        ctx.strokeRect(barX, barTop, barWidth, barH)
-      }
+    // X label
+    ctx.font = `${state.labelFont} ${state.fontFamily}`
+    ctx.fillStyle = '#475569'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'top'
+    // Rotate if too long
+    if (barTotalW < 50) {
+      ctx.save()
+      ctx.translate(x, pad.top + chartH + 10)
+      ctx.rotate(-Math.PI / 4)
+      ctx.textAlign = 'right'
+      ctx.fillText(p.label, 0, 0)
+      ctx.restore()
+    } else {
+      ctx.fillText(p.label, x, pad.top + chartH + 10)
+    }
 
-      // Data point markers
-      if (state.showDataPoints) {
-        ctx.beginPath()
-        ctx.arc(x, barTop, 3, 0, Math.PI * 2)
-        ctx.fillStyle = color
-        ctx.fill()
-        ctx.strokeStyle = '#fff'
-        ctx.lineWidth = 1.5
-        ctx.stroke()
-      }
+    // Value label on top of bar
+    if (p.allocated > 0) {
+      ctx.font = `bold ${state.valueFont} ${state.fontFamily}`
+      ctx.fillStyle = '#1E293B'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'bottom'
+      ctx.fillText(p.allocated.toLocaleString(), x, barTop - 6)
+    }
 
-      // Store for tooltip
-      plotPoints.push({ x: x, y: barTop, curveName: curve.name, duration: DURATIONS[j], value: v.toFixed(2), color })
-    })
+    // Data points
+    if (state.showDataPoints) {
+      ctx.beginPath()
+      ctx.arc(x, barTop, 3, 0, Math.PI * 2)
+      ctx.fillStyle = color
+      ctx.fill()
+      ctx.strokeStyle = '#fff'
+      ctx.lineWidth = 1.5
+      ctx.stroke()
+    }
+
+    plotPoints.push({ x: x + barW / 2, y: barTop + barH / 2, label: p.label, allocated: p.allocated, percentage: p.percentage, color })
   })
+
+  canvas._plotPoints = plotPoints
+
+  // Sum verification
+  const totalAllocated = periods.reduce((a, b) => a + b.allocated, 0)
+  if (totalAllocated !== state.totalCount) {
+    ctx.font = `${state.valueFont} ${state.fontFamily}`
+    ctx.fillStyle = '#EF4444'
+    ctx.textAlign = 'right'
+    ctx.textBaseline = 'bottom'
+    ctx.fillText(`合计: ${totalAllocated} (误差: ${totalAllocated - state.totalCount})`, width - pad.right, pad.top + chartH - 5)
+  } else {
+    ctx.font = `${state.valueFont} ${state.fontFamily}`
+    ctx.fillStyle = '#10B981'
+    ctx.textAlign = 'right'
+    ctx.textBaseline = 'bottom'
+    ctx.fillText(`合计: ${totalAllocated} ✓`, width - pad.right, pad.top + chartH - 5)
+  }
 
   canvas._plotPoints = plotPoints
 }
@@ -299,10 +399,10 @@ let animFrame = null
 let animStart = null
 
 function animate(timestamp) {
-  if (!state.animating) { draw(); return }
+  if (!state.animating || !state.periods.length) { draw(); return }
   if (!animStart) animStart = timestamp
   const elapsed = timestamp - animStart
-  const duration = 1200
+  const duration = 800
   state.animProgress = Math.min(1, elapsed / duration)
   const eased = 1 - Math.pow(1 - state.animProgress, 3)
   draw()
@@ -328,18 +428,15 @@ canvas.addEventListener('mousemove', (e) => {
   const pts = canvas._plotPoints || []
 
   let closest = null
-  let minDist = 20 // pixel threshold
+  let minDist = 20
 
   for (const pt of pts) {
     const dist = Math.hypot(pt.x - mx, pt.y - my)
-    if (dist < minDist) {
-      minDist = dist
-      closest = pt
-    }
+    if (dist < minDist) { minDist = dist; closest = pt }
   }
 
   if (closest) {
-    tooltip.innerHTML = `<strong>${closest.curveName}</strong><br/>工期: ${closest.duration}%<br/>累计: ${closest.value}%`
+    tooltip.innerHTML = `<strong>${closest.label}</strong><br/>分配: ${closest.allocated.toLocaleString()}<br/>占比: ${closest.percentage}%`
     tooltip.classList.add('visible')
     let tx = e.clientX - rect.left + 16
     let ty = e.clientY - rect.top - 10
@@ -358,113 +455,142 @@ canvas.addEventListener('mouseleave', () => {
   tooltip.classList.remove('visible')
 })
 
-// ==================== TAB STATE ====================
-let activeTab = 'curve' // 'curve' | 'graphic'
-
 // ==================== BUILD CONTROLS ====================
 function buildControls() {
   const container = document.getElementById('controls')
   container.innerHTML = ''
 
-  // Tab bar
-  const tabBar = document.createElement('div')
-  tabBar.className = 'tab-bar'
-
-  const curveTab = document.createElement('button')
-  curveTab.className = 'tab-btn' + (activeTab === 'curve' ? ' active' : '')
-  curveTab.textContent = '柱状图设置'
-  curveTab.addEventListener('click', () => { activeTab = 'curve'; buildControls() })
-
-  const graphicTab = document.createElement('button')
-  graphicTab.className = 'tab-btn' + (activeTab === 'graphic' ? ' active' : '')
-  graphicTab.textContent = '图形设置'
-  graphicTab.addEventListener('click', () => { activeTab = 'graphic'; buildControls() })
-
-  tabBar.appendChild(curveTab)
-  tabBar.appendChild(graphicTab)
-  container.appendChild(tabBar)
-
-  // Tab panels
-  const curvePanel = document.createElement('div')
-  curvePanel.className = 'tab-panel' + (activeTab === 'curve' ? ' active' : '')
-
-  const graphicPanel = document.createElement('div')
-  graphicPanel.className = 'tab-panel' + (activeTab === 'graphic' ? ' active' : '')
-
-  // === CURVE TAB ===
-  curvePanel.appendChild(createGroup('显示模式', [
-    createModeButtons(),
-  ]))
-
-  curvePanel.appendChild(createGroup('柱状图设置', [
-    createSingleCurveSelector(),
-  ]))
-
-  if (state.mode === 'multi') {
-    curvePanel.appendChild(createGroup('快速选择（多选）', [
-      createMultiCurveSelector(),
-    ]))
+  if (state.step === 'input') {
+    buildStep1Form(container)
+  } else if (state.step === 'select') {
+    buildStep2Select(container)
+  } else if (state.step === 'result') {
+    buildStep3Result(container)
   }
-
-  curvePanel.appendChild(buildDataViewer())
-
-  // === GRAPHIC TAB ===
-  graphicPanel.appendChild(createGroup('图表设置', [
-    createTextRow('标题', 'chartTitle', state.chartTitle),
-    createTextRow('X 轴标题', 'xAxisTitle', state.xAxisTitle),
-    createTextRow('Y 轴标题', 'yAxisTitle', state.yAxisTitle),
-  ]))
-
-  graphicPanel.appendChild(createGroup('显示选项', [
-    createCheckboxRow('显示网格线', 'showGrid', state.showGrid),
-    createCheckboxRow('显示数据点', 'showDataPoints', state.showDataPoints),
-    createCheckboxRow('渐变填充', 'gradientFill', state.gradientFill),
-    createCheckboxRow('播放动画', 'animating', state.animating),
-  ]))
-
-  graphicPanel.appendChild(createGroup('样式设置', [
-    createRangeRow('柱宽', 'barWidth', 8, 50, state.barWidth),
-    createColorRow('背景色', 'backgroundColor', state.backgroundColor),
-    createColorRow('网格线', 'gridColor', state.gridColor),
-    createColorRow('坐标轴', 'axisColor', state.axisColor),
-  ]))
-
-  container.appendChild(curvePanel)
-  container.appendChild(graphicPanel)
 }
 
-function createModeButtons() {
+// ========== STEP 1: INPUT FORM ==========
+function buildStep1Form(container) {
+  const form = document.createElement('div')
+  form.className = 'wizard-step'
+  form.style.padding = '10px'
+
+  form.appendChild(createGroup('第一步：输入任务参数', [
+    createTextRow('任务名称', 'taskName', state.taskName, true),
+    createNumberRow('工期计划单位数量', 'durationCount', 1, 50, state.durationCount),
+    createSelectRow('工期计划单位', 'durationUnit', [
+      { value: '天', label: '天' },
+      { value: '周', label: '周' },
+      { value: '月', label: '月' },
+      { value: '季', label: '季' },
+      { value: '年', label: '年' },
+    ], state.durationUnit),
+    createNumberRow('总工程量（总资源量）', 'totalCount', 1, 10000000, state.totalCount),
+  ]))
+
+  // Region toggle
+  const regionDiv = document.createElement('div')
+  regionDiv.className = 'control-group'
+  regionDiv.innerHTML = '<h3>区域设置</h3>'
+  const row = document.createElement('div')
+  row.className = 'checkbox-row'
+  row.innerHTML = `<input type="checkbox" ${state.domestic ? 'checked' : ''} id="domestic" /><label for="domestic">国内（周末日=周日）/ 境外（周末日=周五）</label>`
+  row.querySelector('input').addEventListener('change', (e) => { state.domestic = e.target.checked; scheduleDraw() })
+  regionDiv.appendChild(row)
+  form.appendChild(regionDiv)
+
+  // Curve preview
+  const curveDiv = document.createElement('div')
+  curveDiv.className = 'control-group'
+  curveDiv.innerHTML = '<h3>曲线预览（21点）</h3>'
+  const previewDiv = document.createElement('div')
+  previewDiv.style.maxHeight = '200px'
+  previewDiv.style.overflow = 'auto'
+  const table = document.createElement('table')
+  table.style.fontSize = '10px'
+  table.style.width = '100%'
+  table.style.borderCollapse = 'collapse'
+  let html = '<tr><th style="padding:2px 4px;text-align:left;background:var(--bg)">曲线名称</th><th style="padding:2px 4px;text-align:center;background:var(--bg)">预览</th></tr>'
+  P6_CURVES.forEach((c, i) => {
+    const mini = Array.from({length: 21}, (_, j) => {
+      const h = c.values[j] / Math.max(...c.values)
+      return `<span style="display:inline-block;width:3px;height:${Math.max(2, h * 40)}px;background:${c.color};vertical-align:bottom"></span>`
+    }).join('')
+    html += `<tr><td style="padding:1px 4px">${c.shortName}</td><td style="text-align:center;padding:1px">${mini}</td></tr>`
+  })
+  table.innerHTML = html
+  previewDiv.appendChild(table)
+  curveDiv.appendChild(previewDiv)
+  form.appendChild(curveDiv)
+
+  // Start button
+  const btn = document.createElement('button')
+  btn.className = 'btn btn-primary'
+  btn.style.width = '100%'
+  btn.style.marginTop = '12px'
+  btn.style.padding = '10px'
+  btn.textContent = '下一步：选择曲线 →'
+  btn.addEventListener('click', () => {
+    if (!state.taskName.trim()) { alert('请输入任务名称'); return }
+    if (state.durationCount < 1) { alert('工期数量必须大于0'); return }
+    if (state.totalCount <= 0) { alert('总工程量必须大于0'); return }
+    state.step = 'select'
+    buildControls()
+  })
+  form.appendChild(btn)
+
+  container.appendChild(form)
+}
+
+// ========== STEP 2: CURVE SELECTION ==========
+function buildStep2Select(container) {
   const div = document.createElement('div')
-  div.style.display = 'flex'
-  div.style.gap = '6px'
+  div.className = 'wizard-step'
 
-  const singleBtn = document.createElement('button')
-  singleBtn.className = 'curve-btn' + (state.mode === 'single' ? ' active' : '')
-  singleBtn.textContent = '单曲线'
-  singleBtn.addEventListener('click', () => {
-    state.mode = 'single'
+  const summary = document.createElement('div')
+  summary.className = 'control-group'
+  summary.innerHTML = `<h3>已输入参数</h3>
+    <div style="font-size:13px;line-height:1.8">
+      <strong>任务名称：</strong>${escapeHtml(state.taskName)}<br/>
+      <strong>工期：</strong>${state.durationCount} ${state.durationUnit}<br/>
+      <strong>总工程量：</strong>${state.totalCount.toLocaleString()}
+    </div>`
+  div.appendChild(summary)
+
+  const selectGroup = createGroup('第二步：选择曲线类型', [
+    createCurveSelectorGrid(),
+  ])
+  div.appendChild(selectGroup)
+
+  // Buttons
+  const btnRow = document.createElement('div')
+  btnRow.style.display = 'flex'
+  btnRow.style.gap = '8px'
+  btnRow.style.marginTop = '12px'
+
+  const backBtn = document.createElement('button')
+  backBtn.className = 'btn'
+  backBtn.textContent = '← 返回'
+  backBtn.addEventListener('click', () => { state.step = 'input'; buildControls() })
+
+  const generateBtn = document.createElement('button')
+  generateBtn.className = 'btn btn-primary'
+  generateBtn.textContent = '生成图表 →'
+  generateBtn.addEventListener('click', () => {
+    state.step = 'result'
+    computeResult()
     buildControls()
     startAnimation()
   })
 
-  const multiBtn = document.createElement('button')
-  multiBtn.className = 'curve-btn' + (state.mode === 'multi' ? ' active' : '')
-  multiBtn.textContent = '多曲线对比'
-  multiBtn.addEventListener('click', () => {
-    state.mode = 'multi'
-    if (state.selectedCurves.size === 0) {
-      state.selectedCurves = new Set([0])
-    }
-    buildControls()
-    startAnimation()
-  })
+  btnRow.appendChild(backBtn)
+  btnRow.appendChild(generateBtn)
+  div.appendChild(btnRow)
 
-  div.appendChild(singleBtn)
-  div.appendChild(multiBtn)
-  return div
+  container.appendChild(div)
 }
 
-function createSingleCurveSelector() {
+function createCurveSelectorGrid() {
   const div = document.createElement('div')
   div.className = 'curve-selector'
 
@@ -472,113 +598,206 @@ function createSingleCurveSelector() {
     const btn = document.createElement('button')
     btn.className = 'curve-btn' + (state.selectedCurve === i ? ' active' : '')
     btn.innerHTML = `<span class="color-dot" style="background:${curve.color}"></span>${curve.shortName}`
-    btn.addEventListener('click', () => {
-      state.selectedCurve = i
-      state.hiddenCurves.clear()
-      buildControls()
-      startAnimation()
-    })
+    btn.addEventListener('click', () => { state.selectedCurve = i })
     div.appendChild(btn)
   })
 
   return div
 }
 
-function createMultiCurveSelector() {
+// ========== STEP 3: RESULT ==========
+function buildStep3Result(container) {
+  const tabsEl = document.createElement('div')
+  tabsEl.className = 'tab-bar'
+
+  const dataTab = document.createElement('button')
+  dataTab.className = 'tab-btn' + (state.hideResult ? ' active' : '')
+  dataTab.textContent = '数据表格'
+  dataTab.addEventListener('click', () => { state.hideResult = true; buildControls() })
+
+  const chartTab = document.createElement('button')
+  chartTab.className = 'tab-btn' + (state.hideResult ? '' : ' active')
+  chartTab.textContent = '柱状图'
+  chartTab.addEventListener('click', () => { state.hideResult = false; buildControls(); startAnimation() })
+
+  tabsEl.appendChild(dataTab)
+  tabsEl.appendChild(chartTab)
+  container.appendChild(tabsEl)
+
+  // Data panel
+  if (state.hideResult) {
+    buildDataPanel(container)
+  } else {
+    buildChartPanel(container)
+  }
+
+  // Controls for result
+  buildResultControls(container)
+}
+
+function buildDataPanel(container) {
   const div = document.createElement('div')
-  div.className = 'multi-selector'
+  div.className = 'control-group'
+  div.innerHTML = '<h3>资源分配表</h3>'
 
-  P6_CURVES.forEach((curve, i) => {
-    const btn = document.createElement('button')
-    btn.className = 'curve-btn' + (state.selectedCurves.has(i) ? ' active' : '')
-    btn.textContent = curve.shortName
-    btn.addEventListener('click', () => {
-      if (state.selectedCurves.has(i)) {
-        if (state.selectedCurves.size > 1) state.selectedCurves.delete(i)
-      } else {
-        state.selectedCurves.add(i)
-      }
-      buildControls()
-      startAnimation()
-    })
-    div.appendChild(btn)
+  const curve = P6_CURVES[state.selectedCurve]
+  const viewer = document.createElement('div')
+  viewer.className = 'data-viewer'
+
+  const table = document.createElement('table')
+  let html = '<thead><tr><th style="width:60px">工期计划单位</th><th style="color:' + curve.color + '">分配值</th><th style="width:70px">占比(%)</th></tr></thead>'
+  html += '<tbody>'
+  state.periods.forEach((p, i) => {
+    html += `<tr><td style="text-align:left">${p.label}</td><td style="text-align:right">${p.allocated.toLocaleString()}</td><td style="text-align:right">${p.percentage}</td></tr>`
   })
-
-  // Select all / deselect all
-  const row = document.createElement('div')
-  row.style.marginTop = '8px'
-  row.style.display = 'flex'
-  row.style.gap = '6px'
-
-  const selectAll = document.createElement('button')
-  selectAll.className = 'btn'
-  selectAll.style.fontSize = '10px'
-  selectAll.style.padding = '3px 8px'
-  selectAll.textContent = '全选'
-  selectAll.addEventListener('click', () => {
-    state.selectedCurves = new Set(P6_CURVES.map((_, i) => i))
-    buildControls()
-    startAnimation()
-  })
-
-  const deselectAll = document.createElement('button')
-  deselectAll.className = 'btn'
-  deselectAll.style.fontSize = '10px'
-  deselectAll.style.padding = '3px 8px'
-  deselectAll.textContent = '清空'
-  deselectAll.addEventListener('click', () => {
-    state.selectedCurves = new Set()
-    buildControls()
-    startAnimation()
-  })
-
-  row.appendChild(selectAll)
-  row.appendChild(deselectAll)
-  div.appendChild(row)
-
-  return div
+  html += `<tr style="font-weight:bold;background:var(--bg)"><td style="text-align:left">合计</td><td style="text-align:right">${state.periods.reduce((a, b) => a + b.allocated, 0).toLocaleString()}</td><td style="text-align:right">100.00</td></tr>`
+  html += '</tbody>'
+  table.innerHTML = html
+  viewer.appendChild(table)
+  div.appendChild(viewer)
+  container.appendChild(div)
 }
 
-function createTextRow(label, key, value) {
+function buildChartPanel(container) {
+  // Canvas is already in the page, just need to trigger draw
+  scheduleDraw()
+}
+
+function buildResultControls(container) {
+  const div = createGroup('图形设置', [
+    createCheckboxRow('显示网格线', 'showGrid', state.showGrid),
+    createCheckboxRow('显示数据点', 'showDataPoints', state.showDataPoints),
+    createCheckboxRow('渐变填充', 'gradientFill', state.gradientFill),
+    createCheckboxRow('圆角柱形', 'barShape', 'rounded', 'rounded'),
+    createCheckboxRow('播放动画', 'animating', state.animating),
+    createTextRow('图表标题', 'graphTitle', state.graphTitle),
+  ])
+  container.appendChild(div)
+
+  // Export buttons
+  const expDiv = document.createElement('div')
+  expDiv.className = 'control-group'
+  expDiv.innerHTML = '<h3>导出</h3>'
+  const btnRow = document.createElement('div')
+  btnRow.style.display = 'flex'
+  btnRow.style.gap = '6px'
+
+  const pngBtn = document.createElement('button')
+  pngBtn.className = 'btn'
+  pngBtn.textContent = '导出 PNG'
+  pngBtn.addEventListener('click', () => {
+    const link = document.createElement('a')
+    link.download = (state.taskName || 'p6') + '.png'
+    link.href = canvas.toDataURL('image/png')
+    link.click()
+  })
+
+  const csvBtn = document.createElement('button')
+  csvBtn.className = 'btn'
+  csvBtn.textContent = '导出 CSV'
+  csvBtn.addEventListener('click', exportCSV)
+
+  const printBtn = document.createElement('button')
+  printBtn.className = 'btn'
+  printBtn.textContent = '复制数据'
+  printBtn.addEventListener('click', copyData)
+
+  const resetBtn = document.createElement('button')
+  resetBtn.className = 'btn'
+  resetBtn.textContent = '重新计算'
+  resetBtn.addEventListener('click', () => { state.step = 'input'; state.periods = []; buildControls() })
+
+  btnRow.appendChild(pngBtn)
+  btnRow.appendChild(csvBtn)
+  btnRow.appendChild(printBtn)
+  btnRow.appendChild(resetBtn)
+  expDiv.appendChild(btnRow)
+  container.appendChild(expDiv)
+}
+
+function exportCSV() {
+  const curve = P6_CURVES[state.selectedCurve]
+  let csv = '\uFEFF工期计划单位,分配值,占比(%)\n'
+  state.periods.forEach(p => {
+    csv += `${p.label},${p.allocated},${p.percentage}\n`
+  })
+  const total = state.periods.reduce((a, b) => a + b.allocated, 0)
+  csv += `合计,${total},100\n`
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+  const link = document.createElement('a')
+  link.download = (state.taskName || 'p6') + '.csv'
+  link.href = URL.createObjectURL(blob)
+  link.click()
+  URL.revokeObjectURL(link.href)
+}
+
+function copyData() {
+  let text = '工期计划单位\t分配值\t占比(%)\n'
+  state.periods.forEach(p => {
+    text += `${p.label}\t${p.allocated}\t${p.percentage}\n`
+  })
+  navigator.clipboard.writeText(text).then(() => {
+    alert('数据已复制到剪贴板')
+  })
+}
+
+// ========== HELPERS ==========
+function computeResult() {
+  const curve = P6_CURVES[state.selectedCurve]
+  const periods = generatePeriods('2026-01-01') // Use a fixed start date; could be made configurable
+
+  // Adjust curve to match the number of periods
+  const allocated = allocateQuantity(curve.values, state.totalCount)
+
+  // Merge
+  periods.forEach((p, i) => {
+    p.percentage = allocated[i] ? allocated[i].percentage || 0 : 0
+    p.allocated = allocated[i] ? allocated[i].allocated : 0
+    if (allocated[i]) {
+      p.percentage = allocated[i].percentage
+      p.allocated = allocated[i].allocated
+    }
+  })
+
+  state.periods = periods
+  state.chartTitle = `${state.taskName} - ${curve.shortName}`
+}
+
+function createTextRow(label, key, value, required) {
   const row = document.createElement('div')
   row.className = 'control-row'
-  row.innerHTML = `<label>${label}</label><input type="text" value="${escapeHtml(value)}" />`
-  row.querySelector('input').addEventListener('input', (e) => { state[key] = e.target.value; scheduleDraw() })
+  row.innerHTML = `<label>${required ? '<span style="color:var(--red)">*</span> ' : ''}${label}</label><input type="text" value="${escapeHtml(value)}" />`
+  row.querySelector('input').addEventListener('input', (e) => { state[key] = e.target.value })
   return row
 }
 
-function createRangeRow(label, key, min, max, value) {
+function createNumberRow(label, key, min, max, value) {
   const row = document.createElement('div')
   row.className = 'control-row'
-  row.innerHTML = `<label>${label}</label><input type="range" min="${min}" max="${max}" step="0.5" value="${value}" /><span class="range-value">${value}</span>`
-  const input = row.querySelector('input')
-  const span = row.querySelector('.range-value')
-  input.addEventListener('input', (e) => {
-    const v = Number(e.target.value)
-    state[key] = v
-    span.textContent = v
-    scheduleDraw()
-  })
+  row.innerHTML = `<label>${label}</label><input type="number" min="${min}" max="${max}" value="${value}" />`
+  row.querySelector('input').addEventListener('input', (e) => { state[key] = Number(e.target.value) || 0 })
   return row
 }
 
-function createColorRow(label, key, value) {
+function createSelectRow(label, key, options, value) {
   const row = document.createElement('div')
   row.className = 'control-row'
-  row.innerHTML = `<label>${label}</label><input type="color" value="${value}" />`
-  row.querySelector('input').addEventListener('input', (e) => { state[key] = e.target.value; scheduleDraw() })
+  const opts = options.map(o => `<option value="${o.value}" ${o.value === value ? 'selected' : ''}>${o.label}</option>`).join('')
+  row.innerHTML = `<label>${label}</label><select>${opts}</select>`
+  row.querySelector('select').addEventListener('change', (e) => { state[key] = e.target.value })
   return row
 }
 
-function createCheckboxRow(label, key, value) {
+function createCheckboxRow(label, key, value, value2) {
+  const checked = value === 'rounded' ? state.barShape === 'rounded' : state[key]
   const row = document.createElement('div')
   row.className = 'checkbox-row'
-  row.innerHTML = `<input type="checkbox" ${value ? 'checked' : ''} /><label>${label}</label>`
+  row.innerHTML = `<input type="checkbox" ${checked ? 'checked' : ''} />
+    <label>${label}</label>`
   row.querySelector('input').addEventListener('change', (e) => {
-    state[key] = e.target.checked
-    if (key === 'animating' && e.target.checked) startAnimation()
-    else if (key === 'animating' && !e.target.checked) { state.animProgress = 1; draw() }
-    else scheduleDraw()
+    if (key === 'barShape') state.barShape = e.target.checked ? 'rounded' : 'square'
+    else state[key] = e.target.checked
+    scheduleDraw()
   })
   return row
 }
@@ -593,83 +812,11 @@ function createGroup(title, rows) {
   return div
 }
 
-function buildDataViewer() {
-  const div = document.createElement('div')
-  div.className = 'control-group'
-  div.innerHTML = '<h3>原始数据表</h3>'
-
-  const viewer = document.createElement('div')
-  viewer.className = 'data-viewer'
-
-  const table = document.createElement('table')
-  let theadHTML = '<thead><tr><th style="width:50px">工期%</th>'
-  P6_CURVES.forEach(c => { theadHTML += `<th style="color:${c.color}">${c.shortName}</th>` })
-  theadHTML += '</tr></thead>'
-  table.innerHTML = theadHTML
-
-  const tbody = document.createElement('tbody')
-  DURATIONS.forEach((d, i) => {
-    const tr = document.createElement('tr')
-    let html = `<td>${d}%</td>`
-    P6_CURVES.forEach(c => { html += `<td>${c.values[i].toFixed(2)}</td>` })
-    tr.innerHTML = html
-    tbody.appendChild(tr)
-  })
-
-  table.appendChild(tbody)
-  viewer.appendChild(table)
-  div.appendChild(viewer)
-  return div
-}
-
-// ==================== EXPORT ====================
-document.getElementById('export-png').addEventListener('click', () => {
-  const link = document.createElement('a')
-  link.download = 'p6-resource-bar.png'
-  link.href = canvas.toDataURL('image/png')
-  link.click()
-})
-
-document.getElementById('export-csv').addEventListener('click', () => {
-  let csv = '工期%,' + P6_CURVES.map(c => c.name).join(',') + '\n'
-  DURATIONS.forEach((d, i) => {
-    csv += `${d}%`
-    P6_CURVES.forEach(c => { csv += `,${c.values[i].toFixed(2)}` })
-    csv += '\n'
-  })
-  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' })
-  const link = document.createElement('a')
-  link.download = 'p6-resource-bar.csv'
-  link.href = URL.createObjectURL(blob)
-  link.click()
-  URL.revokeObjectURL(link.href)
-})
-
-document.getElementById('print-data').addEventListener('click', () => {
-  let text = '工期%'
-  P6_CURVES.forEach(c => { text += '\t' + c.shortName })
-  text += '\n'
-  DURATIONS.forEach((d, i) => {
-    text += `${d}%`
-    P6_CURVES.forEach(c => { text += '\t' + c.values[i].toFixed(2) })
-    text += '\n'
-  })
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('print-data')
-    btn.textContent = '已复制!'
-    setTimeout(() => { btn.textContent = '复制数据' }, 1500)
-  }).catch(() => {
-    prompt('复制以下内容:', text)
-  })
-})
-
-// ==================== UTILS ====================
 function escapeHtml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
 // ==================== INIT ====================
 buildControls()
-animate(performance.now())
 
 window.addEventListener('resize', scheduleDraw)
