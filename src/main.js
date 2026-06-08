@@ -462,8 +462,6 @@ function buildControls() {
 
   if (state.step === 'input') {
     buildStep1Form(container)
-  } else if (state.step === 'select') {
-    buildStep2Select(container)
   } else if (state.step === 'result') {
     buildStep3Result(container)
   }
@@ -499,110 +497,72 @@ function buildStep1Form(container) {
   regionDiv.appendChild(row)
   form.appendChild(regionDiv)
 
-  // Curve preview
+  // Curve selector
   const curveDiv = document.createElement('div')
   curveDiv.className = 'control-group'
-  curveDiv.innerHTML = '<h3>曲线预览（21点）</h3>'
+  curveDiv.innerHTML = '<h3>选择曲线类型</h3>'
   const previewDiv = document.createElement('div')
-  previewDiv.style.maxHeight = '200px'
+  previewDiv.style.maxHeight = '260px'
   previewDiv.style.overflow = 'auto'
   const table = document.createElement('table')
-  table.style.fontSize = '10px'
   table.style.width = '100%'
-  table.style.borderCollapse = 'collapse'
-  let html = '<tr><th style="padding:2px 4px;text-align:left;background:var(--bg)">曲线名称</th><th style="padding:2px 4px;text-align:center;background:var(--bg)">预览</th></tr>'
+  table.style.borderCollapse = 'separate'
+  table.style.borderSpacing = '0'
+  table.style.borderRadius = '8px'
+  table.style.overflow = 'hidden'
+  table.style.border = '1px solid var(--border)'
+  let html = '<tr style="background:#F1F5F9"><th style="padding:6px 10px;text-align:left;font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.02em;border-bottom:1px solid var(--border);cursor:default">曲线名称</th><th style="padding:6px 10px;text-align:center;font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.02em;border-bottom:1px solid var(--border);cursor:default">预览</th></tr>'
   P6_CURVES.forEach((c, i) => {
     const mini = Array.from({length: 21}, (_, j) => {
       const h = c.values[j] / Math.max(...c.values)
-      return `<span style="display:inline-block;width:3px;height:${Math.max(2, h * 40)}px;background:${c.color};vertical-align:bottom"></span>`
+      return `<span style="display:inline-block;width:4px;height:${Math.max(3, h * 50)}px;background:${c.color};border-radius:1px;vertical-align:bottom;margin:0 0.5px"></span>`
     }).join('')
-    html += `<tr><td style="padding:1px 4px">${c.shortName}</td><td style="text-align:center;padding:1px">${mini}</td></tr>`
+    html += `<tr style="cursor:pointer;transition:background-color 0.1s ease-out" data-curve-index="${i}"><td style="padding:5px 10px;font-size:12px;border-bottom:1px solid #F1F5F9">${c.shortName}</td><td style="text-align:center;padding:5px 10px;border-bottom:1px solid #F1F5F9">${mini}</td></tr>`
   })
   table.innerHTML = html
   previewDiv.appendChild(table)
   curveDiv.appendChild(previewDiv)
   form.appendChild(curveDiv)
 
+  // Attach click handlers to curve rows
+  table.querySelectorAll('tr[data-curve-index]').forEach(tr => {
+    tr.addEventListener('mouseenter', () => { tr.style.backgroundColor = 'var(--primary-light)' })
+    tr.addEventListener('mouseleave', () => { tr.style.backgroundColor = '' })
+    tr.addEventListener('click', () => {
+      const idx = Number(tr.dataset.curveIndex)
+      state.selectedCurve = idx
+    })
+  })
+
+  // Highlight selected curve row
+  function highlightSelectedCurve() {
+    table.querySelectorAll('tr[data-curve-index]').forEach(tr => {
+      const idx = Number(tr.dataset.curveIndex)
+      tr.style.backgroundColor = idx === state.selectedCurve ? 'var(--primary-light)' : ''
+    })
+  }
+  highlightSelectedCurve()
+  const origSelCurve = Object.getOwnPropertyDescriptor(state, 'selectedCurve')
+
   // Start button
   const btn = document.createElement('button')
   btn.className = 'btn btn-primary'
   btn.style.width = '100%'
-  btn.style.marginTop = '12px'
+  btn.style.marginTop = 'var(--space-3)'
   btn.style.padding = '10px'
-  btn.textContent = '下一步：选择曲线 →'
+  btn.textContent = '生成图表 →'
   btn.addEventListener('click', () => {
     if (!state.taskName.trim()) { alert('请输入任务名称'); return }
     if (state.durationCount < 1) { alert('工期数量必须大于0'); return }
     if (state.totalCount <= 0) { alert('总工程量必须大于0'); return }
-    state.step = 'select'
-    buildControls()
-  })
-  form.appendChild(btn)
-
-  container.appendChild(form)
-}
-
-// ========== STEP 2: CURVE SELECTION ==========
-function buildStep2Select(container) {
-  const div = document.createElement('div')
-  div.className = 'wizard-step'
-
-  const summary = document.createElement('div')
-  summary.className = 'control-group'
-  summary.innerHTML = `<h3>已输入参数</h3>
-    <div style="font-size:13px;line-height:1.8">
-      <strong>任务名称：</strong>${escapeHtml(state.taskName)}<br/>
-      <strong>工期：</strong>${state.durationCount} ${state.durationUnit}<br/>
-      <strong>总工程量：</strong>${state.totalCount.toLocaleString()}
-    </div>`
-  div.appendChild(summary)
-
-  const selectGroup = createGroup('第二步：选择曲线类型', [
-    createCurveSelectorGrid(),
-  ])
-  div.appendChild(selectGroup)
-
-  // Buttons
-  const btnRow = document.createElement('div')
-  btnRow.style.display = 'flex'
-  btnRow.style.gap = '8px'
-  btnRow.style.marginTop = '12px'
-
-  const backBtn = document.createElement('button')
-  backBtn.className = 'btn'
-  backBtn.textContent = '← 返回'
-  backBtn.addEventListener('click', () => { state.step = 'input'; buildControls() })
-
-  const generateBtn = document.createElement('button')
-  generateBtn.className = 'btn btn-primary'
-  generateBtn.textContent = '生成图表 →'
-  generateBtn.addEventListener('click', () => {
     state.step = 'result'
     computeResult()
     buildControls()
     startAnimation()
   })
+  form.appendChild(btn)
 
-  btnRow.appendChild(backBtn)
-  btnRow.appendChild(generateBtn)
-  div.appendChild(btnRow)
-
-  container.appendChild(div)
-}
-
-function createCurveSelectorGrid() {
-  const div = document.createElement('div')
-  div.className = 'curve-selector'
-
-  P6_CURVES.forEach((curve, i) => {
-    const btn = document.createElement('button')
-    btn.className = 'curve-btn' + (state.selectedCurve === i ? ' active' : '')
-    btn.innerHTML = `<span class="color-dot" style="background:${curve.color}"></span>${curve.shortName}`
-    btn.addEventListener('click', () => { state.selectedCurve = i })
-    div.appendChild(btn)
-  })
-
-  return div
+  container.appendChild(form)
 }
 
 // ========== STEP 3: RESULT ==========
