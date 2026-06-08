@@ -250,15 +250,6 @@ main { display: flex; flex: 1; overflow: hidden; }
 }
 #tooltip.visible { opacity: 1; }
 
-footer {
-  padding: 10px 20px;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
 @media (max-width: 900px) {
   main { flex-direction: column; }
   #controls {
