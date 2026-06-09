@@ -587,37 +587,13 @@ function buildStep3Result(container) {
   // Data panel
   if (state.hideResult) {
     buildDataPanel(container)
-    // Export + reset buttons
-    const expDiv = document.createElement('div')
-    expDiv.className = 'control-group'
-    expDiv.innerHTML = '<h3>导出</h3>'
-    const btnRow = document.createElement('div')
-    btnRow.style.display = 'flex'
-    btnRow.style.gap = '6px'
-
-    const csvBtn = document.createElement('button')
-    csvBtn.className = 'btn'
-    csvBtn.textContent = '导出 CSV'
-    csvBtn.addEventListener('click', exportCSV)
-
-    const printBtn = document.createElement('button')
-    printBtn.className = 'btn'
-    printBtn.textContent = '复制数据'
-    printBtn.addEventListener('click', copyData)
-
     const resetBtn = document.createElement('button')
     resetBtn.className = 'btn'
     resetBtn.textContent = '重新计算'
     resetBtn.addEventListener('click', () => { state.step = 'input'; state.periods = []; buildControls() })
-
-    btnRow.appendChild(csvBtn)
-    btnRow.appendChild(printBtn)
-    btnRow.appendChild(resetBtn)
-    expDiv.appendChild(btnRow)
-    container.appendChild(expDiv)
+    container.appendChild(resetBtn)
   } else {
     buildChartPanel(container)
-    // Graph settings + export when chart tab is active
     const div = createGroup('图形设置', [
       createCheckboxRow('显示网格线', 'showGrid', state.showGrid),
       createCheckboxRow('显示数据点', 'showDataPoints', state.showDataPoints),
@@ -628,44 +604,30 @@ function buildStep3Result(container) {
     ])
     container.appendChild(div)
 
-    const expDiv = document.createElement('div')
-    expDiv.className = 'control-group'
-    expDiv.innerHTML = '<h3>导出</h3>'
-    const btnRow = document.createElement('div')
-    btnRow.style.display = 'flex'
-    btnRow.style.gap = '6px'
+    const resetBtn = document.createElement('button')
+    resetBtn.className = 'btn'
+    resetBtn.textContent = '重新计算'
+    resetBtn.addEventListener('click', () => { state.step = 'input'; state.periods = []; buildControls() })
+    container.appendChild(resetBtn)
+  }
 
-    const pngBtn = document.createElement('button')
-    pngBtn.className = 'btn'
-    pngBtn.textContent = '导出 PNG'
-    pngBtn.addEventListener('click', () => {
+  // Header export buttons
+  const headerPngBtn = document.getElementById('header-export-png')
+  if (headerPngBtn) {
+    headerPngBtn.addEventListener('click', () => {
       const link = document.createElement('a')
       link.download = (state.taskName || 'p6') + '.png'
       link.href = canvas.toDataURL('image/png')
       link.click()
     })
-
-    const csvBtn = document.createElement('button')
-    csvBtn.className = 'btn'
-    csvBtn.textContent = '导出 CSV'
-    csvBtn.addEventListener('click', exportCSV)
-
-    const printBtn = document.createElement('button')
-    printBtn.className = 'btn'
-    printBtn.textContent = '复制数据'
-    printBtn.addEventListener('click', copyData)
-
-    const resetBtn = document.createElement('button')
-    resetBtn.className = 'btn'
-    resetBtn.textContent = '重新计算'
-    resetBtn.addEventListener('click', () => { state.step = 'input'; state.periods = []; buildControls() })
-
-    btnRow.appendChild(pngBtn)
-    btnRow.appendChild(csvBtn)
-    btnRow.appendChild(printBtn)
-    btnRow.appendChild(resetBtn)
-    expDiv.appendChild(btnRow)
-    container.appendChild(expDiv)
+  }
+  const headerCsvBtn = document.getElementById('header-export-csv')
+  if (headerCsvBtn) {
+    headerCsvBtn.addEventListener('click', exportCSV)
+  }
+  const headerCopyBtn = document.getElementById('header-copy-data')
+  if (headerCopyBtn) {
+    headerCopyBtn.addEventListener('click', copyData)
   }
 
 function buildDataPanel(container) {

@@ -9,8 +9,15 @@
   <body>
     <div id="app">
       <header>
-        <h1>Primavera P6 资源加载曲线</h1>
-        <p>12 种曲线类型完整百分比数据表 — 按工期百分比（Duration %）以 5% 为间隔定义</p>
+        <div class="header-left">
+          <h1>Primavera P6 资源加载曲线</h1>
+          <p>12 种曲线类型完整百分比数据表 — 按工期百分比（Duration %）以 5% 为间隔定义</p>
+        </div>
+        <div class="header-right">
+          <button id="header-export-png" class="btn">导出 PNG</button>
+          <button id="header-export-csv" class="btn">导出 CSV</button>
+          <button id="header-copy-data" class="btn">复制数据</button>
+        </div>
       </header>
       <main>
         <aside id="controls"></aside>
