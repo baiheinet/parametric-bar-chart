@@ -501,48 +501,35 @@ function buildStep1Form(container) {
   const curveDiv = document.createElement('div')
   curveDiv.className = 'control-group'
   curveDiv.innerHTML = '<h3>选择曲线类型</h3>'
-  const previewDiv = document.createElement('div')
-  previewDiv.style.maxHeight = '260px'
-  previewDiv.style.overflow = 'auto'
-  const table = document.createElement('table')
-  table.style.width = '100%'
-  table.style.borderCollapse = 'separate'
-  table.style.borderSpacing = '0'
-  table.style.borderRadius = '8px'
-  table.style.overflow = 'hidden'
-  table.style.border = '1px solid var(--border)'
-  let html = '<tr style="background:#F1F5F9"><th style="padding:6px 10px;text-align:left;font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.02em;border-bottom:1px solid var(--border);cursor:default">曲线名称</th><th style="padding:6px 10px;text-align:center;font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.02em;border-bottom:1px solid var(--border);cursor:default">预览</th></tr>'
+  const grid = document.createElement('div')
+  grid.className = 'curve-card-grid'
   P6_CURVES.forEach((c, i) => {
-    const mini = Array.from({length: 21}, (_, j) => {
-      const h = c.values[j] / Math.max(...c.values)
-      return `<span style="display:inline-block;width:4px;height:${Math.max(3, h * 50)}px;background:${c.color};border-radius:1px;vertical-align:bottom;margin:0 0.5px"></span>`
+    const card = document.createElement('div')
+    card.className = 'curve-card' + (i === state.selectedCurve ? ' selected' : '')
+    card.setAttribute('data-curve-index', i)
+    const maxVal = Math.max(...c.values)
+    const barsSvg = Array.from({length: 21}, (_, j) => {
+      const h = c.values[j] / maxVal
+      return `<span style="display:inline-block;width:4px;height:${Math.max(2, h * 50)}px;background:${c.color};border-radius:1px;vertical-align:bottom;margin:0 0.5px;transition:height 0.2s ease-out"></span>`
     }).join('')
-    html += `<tr style="cursor:pointer;transition:background-color 0.1s ease-out" data-curve-index="${i}"><td style="padding:5px 10px;font-size:12px;border-bottom:1px solid #F1F5F9">${c.shortName}</td><td style="text-align:center;padding:5px 10px;border-bottom:1px solid #F1F5F9">${mini}</td></tr>`
+    card.innerHTML = `<div class="curve-card-preview">${barsSvg}</div><div class="curve-card-label">${c.shortName}</div>`
+    grid.appendChild(card)
   })
-  table.innerHTML = html
-  previewDiv.appendChild(table)
-  curveDiv.appendChild(previewDiv)
+  curveDiv.appendChild(grid)
   form.appendChild(curveDiv)
 
-  // Attach click handlers to curve rows
-  table.querySelectorAll('tr[data-curve-index]').forEach(tr => {
-    tr.addEventListener('mouseenter', () => { tr.style.backgroundColor = 'var(--primary-light)' })
-    tr.addEventListener('mouseleave', () => { tr.style.backgroundColor = '' })
-    tr.addEventListener('click', () => {
-      const idx = Number(tr.dataset.curveIndex)
+  grid.querySelectorAll('.curve-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const idx = Number(card.dataset.curveIndex)
       state.selectedCurve = idx
+      grid.querySelectorAll('.curve-card').forEach(c => {
+        c.classList.toggle('selected', Number(c.dataset.curveIndex) === idx)
+      })
+    })
+    card.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); card.click() }
     })
   })
-
-  // Highlight selected curve row
-  function highlightSelectedCurve() {
-    table.querySelectorAll('tr[data-curve-index]').forEach(tr => {
-      const idx = Number(tr.dataset.curveIndex)
-      tr.style.backgroundColor = idx === state.selectedCurve ? 'var(--primary-light)' : ''
-    })
-  }
-  highlightSelectedCurve()
-  const origSelCurve = Object.getOwnPropertyDescriptor(state, 'selectedCurve')
 
   // Start button
   const btn = document.createElement('button')

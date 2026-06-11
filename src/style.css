@@ -190,6 +190,57 @@ input:focus-visible, select:focus-visible {
 }
 
 /* Curve selector */
+.curve-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.curve-card {
+  width: 100%;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.15s ease-out;
+  overflow: hidden;
+  text-align: center;
+}
+
+.curve-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.curve-card.selected {
+  border-color: var(--primary);
+  border-width: 3px;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.2);
+}
+
+.curve-card-preview {
+  height: 60px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 4px 6px;
+  background: var(--bg);
+}
+
+.curve-card-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  padding: 4px 6px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .curve-selector {
   display: grid;
   grid-template-columns: 1fr 1fr;
