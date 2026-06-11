@@ -927,6 +927,7 @@ function isDarkMode() {
 }
 
 // ==================== INIT ====================
+initTheme()
 buildControls()
 
 window.addEventListener('resize', scheduleDraw)
