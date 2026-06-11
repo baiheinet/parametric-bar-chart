@@ -397,6 +397,13 @@ function draw() {
   }
 
   canvas._plotPoints = plotPoints
+
+  const fallback = document.getElementById('chart-fallback')
+  if (fallback) {
+    const curve = P6_CURVES[state.selectedCurve]
+    const total = periods.reduce((a, b) => a + b.allocated, 0)
+    fallback.textContent = `${state.graphTitle} - ${curve.shortName}曲线，共${periods.length}个周期，总工程量${total}`
+  }
 }
 
 function roundRect(ctx, x, y, w, h, r) {
@@ -438,6 +445,8 @@ function startAnimation() {
 }
 
 // ==================== TOOLTIP ====================
+let tooltipHideTimer = null
+
 canvas.addEventListener('mousemove', (e) => {
   const rect = canvas.getBoundingClientRect()
   const mx = e.clientX - rect.left
@@ -453,6 +462,7 @@ canvas.addEventListener('mousemove', (e) => {
   }
 
   if (closest) {
+    if (tooltipHideTimer) { clearTimeout(tooltipHideTimer); tooltipHideTimer = null }
     tooltip.innerHTML = `<strong>${closest.label}</strong><br/>分配: ${closest.allocated.toLocaleString()}<br/>占比: ${closest.percentage}%`
     tooltip.classList.add('visible')
     let tx = e.clientX - rect.left + 16
@@ -464,16 +474,31 @@ canvas.addEventListener('mousemove', (e) => {
     canvas.style.cursor = 'pointer'
     highlightTableRow(closest.index)
   } else {
-    tooltip.classList.remove('visible')
+    scheduleHideTooltip()
     canvas.style.cursor = 'default'
     highlightTableRow(-1)
   }
 })
 
 canvas.addEventListener('mouseleave', () => {
-  tooltip.classList.remove('visible')
+  scheduleHideTooltip()
   highlightTableRow(-1)
 })
+
+tooltip.addEventListener('mouseenter', () => {
+  if (tooltipHideTimer) { clearTimeout(tooltipHideTimer); tooltipHideTimer = null }
+})
+
+tooltip.addEventListener('mouseleave', () => {
+  tooltip.classList.remove('visible')
+})
+
+function scheduleHideTooltip() {
+  if (tooltipHideTimer) clearTimeout(tooltipHideTimer)
+  tooltipHideTimer = setTimeout(() => {
+    tooltip.classList.remove('visible')
+  }, 200)
+}
 
 function highlightTableRow(index) {
   document.querySelectorAll('.data-viewer tbody tr[data-bar-index]').forEach(tr => {
@@ -530,10 +555,15 @@ function buildStep1Form(container) {
   curveDiv.innerHTML = '<h3>选择曲线类型</h3>'
   const grid = document.createElement('div')
   grid.className = 'curve-card-grid'
+  grid.setAttribute('role', 'radiogroup')
+  grid.setAttribute('aria-label', '曲线类型选择')
   P6_CURVES.forEach((c, i) => {
     const card = document.createElement('div')
     card.className = 'curve-card' + (i === state.selectedCurve ? ' selected' : '')
     card.setAttribute('data-curve-index', i)
+    card.setAttribute('role', 'radio')
+    card.setAttribute('aria-selected', i === state.selectedCurve ? 'true' : 'false')
+    card.setAttribute('tabindex', i === state.selectedCurve ? '0' : '-1')
     const maxVal = Math.max(...c.values)
     const barsSvg = Array.from({length: 21}, (_, j) => {
       const h = c.values[j] / maxVal
@@ -550,11 +580,24 @@ function buildStep1Form(container) {
       const idx = Number(card.dataset.curveIndex)
       state.selectedCurve = idx
       grid.querySelectorAll('.curve-card').forEach(c => {
-        c.classList.toggle('selected', Number(c.dataset.curveIndex) === idx)
+        const isSelected = Number(c.dataset.curveIndex) === idx
+        c.classList.toggle('selected', isSelected)
+        c.setAttribute('aria-selected', isSelected ? 'true' : 'false')
+        c.setAttribute('tabindex', isSelected ? '0' : '-1')
       })
     })
     card.addEventListener('keydown', (e) => {
       if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); card.click() }
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault()
+        const next = card.nextElementSibling
+        if (next) next.focus()
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        const prev = card.previousElementSibling
+        if (prev) prev.focus()
+      }
     })
   })
 
