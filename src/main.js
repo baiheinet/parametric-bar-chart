@@ -556,14 +556,35 @@ function buildStep1Form(container) {
   btn.style.padding = '10px'
   btn.textContent = '生成图表 →'
   btn.addEventListener('click', () => {
-    if (!state.taskName.trim()) { alert('请输入任务名称'); return }
-    if (state.durationCount < 1) { alert('工期数量必须大于0'); return }
-    if (state.totalCount <= 0) { alert('总工程量必须大于0'); return }
-    state.step = 'result'
-    computeResult()
-buildControls()
-initTheme()
-    startAnimation()
+    let valid = true
+    const inputs = form.querySelectorAll('input')
+    inputs.forEach(input => {
+      if (input.type === 'text' && input.closest('.control-row')) {
+        const label = input.closest('.control-row').querySelector('label')
+        if (label && label.textContent.includes('*')) {
+          if (!validateField(input, 'taskName', v => v.trim() ? null : '请输入任务名称')) valid = false
+        }
+      }
+      if (input.type === 'number') {
+        const key = input.closest('.control-row')?.querySelector('label')?.textContent.includes('工期') ? 'durationCount' : 'totalCount'
+        if (!validateField(input, key, v => {
+          const n = Number(v)
+          if (isNaN(n)) return '请输入有效数字'
+          if (key === 'durationCount' && (n < 1 || n > 50)) return '范围: 1-50'
+          if (key === 'totalCount' && n <= 0) return '必须大于0'
+          return null
+        })) valid = false
+      }
+    })
+    if (!valid) return
+    btn.classList.add('btn-loading')
+    btn.textContent = '生成中...'
+    setTimeout(() => {
+      state.step = 'result'
+      computeResult()
+      buildControls()
+      startAnimation()
+    }, 300)
   })
   form.appendChild(btn)
 
@@ -716,7 +737,11 @@ function createTextRow(label, key, value, required) {
   const row = document.createElement('div')
   row.className = 'control-row'
   row.innerHTML = `<label>${required ? '<span style="color:var(--red)">*</span> ' : ''}${label}</label><input type="text" value="${escapeHtml(value)}" />`
-  row.querySelector('input').addEventListener('input', (e) => { state[key] = e.target.value })
+  const input = row.querySelector('input')
+  input.addEventListener('input', (e) => { state[key] = e.target.value })
+  if (required) {
+    input.addEventListener('blur', () => validateField(input, key, v => v.trim() ? null : '不能为空'))
+  }
   return row
 }
 
@@ -724,8 +749,35 @@ function createNumberRow(label, key, min, max, value) {
   const row = document.createElement('div')
   row.className = 'control-row'
   row.innerHTML = `<label>${label}</label><input type="number" min="${min}" max="${max}" value="${value}" />`
-  row.querySelector('input').addEventListener('input', (e) => { state[key] = Number(e.target.value) || 0 })
+  const input = row.querySelector('input')
+  input.addEventListener('input', (e) => { state[key] = Number(e.target.value) || 0 })
+  input.addEventListener('blur', () => validateField(input, key, v => {
+    const n = Number(v)
+    if (isNaN(n)) return '请输入有效数字'
+    if (key === 'durationCount' && (n < 1 || n > 50)) return '范围: 1-50'
+    if (key === 'totalCount' && n <= 0) return '必须大于0'
+    return null
+  }))
   return row
+}
+
+function validateField(input, key, validator) {
+  const wrapper = input.closest('.control-row')
+  let msg = wrapper.querySelector('.validation-msg')
+  const error = validator(input.value)
+  if (error) {
+    input.classList.add('validation-error')
+    if (!msg) {
+      msg = document.createElement('div')
+      msg.className = 'validation-msg'
+      wrapper.appendChild(msg)
+    }
+    msg.textContent = error
+  } else {
+    input.classList.remove('validation-error')
+    if (msg) msg.remove()
+  }
+  return !error
 }
 
 function createSelectRow(label, key, options, value) {
