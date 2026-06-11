@@ -46,6 +46,8 @@ const state = {
   labelFont: '12px',
   valueFont: '11px',
   hideResult: false,
+  hoverBarIndex: -1,
+  sequentialAnim: true,
 }
 
 // ==================== DATE HELPERS ====================
@@ -223,35 +225,38 @@ function draw() {
   canvas.style.height = height + 'px'
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
+  const dark = isDarkMode()
+  const textColor = dark ? '#F1F5F9' : '#1E293B'
+  const subtitleColor = dark ? '#94A3B8' : '#64748B'
+  const gridColor = dark ? '#334155' : state.gridColor
+  const axisLabelColor = dark ? '#94A3B8' : '#475569'
+  const valueLabelColor = dark ? '#E2E8F0' : '#1E293B'
+  const bgColor = dark ? '#1E293B' : state.backgroundColor
+
   const pad = { top: 55, right: 50, bottom: 70, left: 60 }
   const chartW = width - pad.left - pad.right
   const chartH = height - pad.top - pad.bottom
 
-  // Background
-  ctx.fillStyle = state.backgroundColor
+  ctx.fillStyle = bgColor
   ctx.beginPath()
   roundRect(ctx, 0, 0, width, height, 12)
   ctx.fill()
 
-  // Title
   ctx.font = `bold ${state.titleFont} ${state.fontFamily}`
-  ctx.fillStyle = '#1E293B'
+  ctx.fillStyle = textColor
   ctx.textAlign = 'center'
   ctx.fillText(state.graphTitle || '资源加载柱状图', width / 2, 28)
 
-  // Subtitle with task info
   if (state.taskName) {
     ctx.font = `${state.labelFont} ${state.fontFamily}`
-    ctx.fillStyle = '#64748B'
+    ctx.fillStyle = subtitleColor
     ctx.fillText(`${state.taskName} | 总工程量: ${state.totalCount}`, width / 2, 50)
   }
 
-  // Max value
   const maxVal = Math.max(...periods.map(p => p.allocated), 1)
   const yMax = Math.ceil(maxVal * 1.15)
 
-  // Axes
-  ctx.strokeStyle = state.axisColor
+  ctx.strokeStyle = dark ? '#475569' : state.axisColor
   ctx.lineWidth = 1.5
   ctx.beginPath()
   ctx.moveTo(pad.left, pad.top)
@@ -259,13 +264,18 @@ function draw() {
   ctx.lineTo(pad.left + chartW, pad.top + chartH)
   ctx.stroke()
 
-  // Grid
+  ctx.font = `${state.labelFont} ${state.fontFamily}`
+  ctx.fillStyle = dark ? '#64748B' : '#94A3B8'
+  ctx.textAlign = 'right'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('(工程量)', pad.left - 8, pad.top - 14)
+
   if (state.showGrid) {
     const gridSteps = 5
-    ctx.strokeStyle = state.gridColor
+    ctx.strokeStyle = gridColor
     ctx.lineWidth = 1
     ctx.font = `${state.labelFont} ${state.fontFamily}`
-    ctx.fillStyle = '#94A3B8'
+    ctx.fillStyle = dark ? '#64748B' : '#94A3B8'
     ctx.textAlign = 'right'
     ctx.textBaseline = 'middle'
 
@@ -280,7 +290,6 @@ function draw() {
     }
   }
 
-  // Bars
   const n = periods.length
   const barTotalW = chartW / n
   const barW = Math.max(6, Math.min(40, barTotalW * 0.6))
@@ -289,13 +298,17 @@ function draw() {
   const curve = P6_CURVES[state.selectedCurve]
   const color = curve.color
 
+  const highlightIdx = state.hoverBarIndex
+
   periods.forEach((p, i) => {
     const x = pad.left + i * barTotalW + barTotalW / 2
-    const barH = (p.allocated / yMax) * chartH * state.animProgress
+    const animProg = state.sequentialAnim ? Math.max(0, Math.min(1, (state.animProgress * (n + 4) - i) / 4)) : state.animProgress
+    const barH = (p.allocated / yMax) * chartH * animProg
     const barTop = pad.top + chartH - barH
     const barX = x - barW / 2
 
-    // Gradient
+    const isHighlighted = highlightIdx === i
+
     if (state.gradientFill) {
       const gradient = ctx.createLinearGradient(0, pad.top + chartH, 0, barTop)
       gradient.addColorStop(0, color + '44')
@@ -305,7 +318,12 @@ function draw() {
       ctx.fillStyle = color
     }
 
-    // Rounded bar
+    if (isHighlighted) {
+      ctx.save()
+      ctx.shadowColor = color
+      ctx.shadowBlur = 12
+    }
+
     if (state.barShape === 'rounded') {
       const r = Math.min(4, barW / 2)
       ctx.beginPath()
@@ -321,12 +339,14 @@ function draw() {
       ctx.fillRect(barX, barTop, barW, barH)
     }
 
-    // X label
+    if (isHighlighted) {
+      ctx.restore()
+    }
+
     ctx.font = `${state.labelFont} ${state.fontFamily}`
-    ctx.fillStyle = '#475569'
+    ctx.fillStyle = axisLabelColor
     ctx.textAlign = 'center'
     ctx.textBaseline = 'top'
-    // Rotate if too long
     if (barTotalW < 50) {
       ctx.save()
       ctx.translate(x, pad.top + chartH + 10)
@@ -338,42 +358,39 @@ function draw() {
       ctx.fillText(p.label, x, pad.top + chartH + 10)
     }
 
-    // Value label on top of bar
-    if (p.allocated > 0) {
+    if (p.allocated > 0 && animProg > 0.5) {
       ctx.font = `bold ${state.valueFont} ${state.fontFamily}`
-      ctx.fillStyle = '#1E293B'
+      ctx.fillStyle = valueLabelColor
       ctx.textAlign = 'center'
       ctx.textBaseline = 'bottom'
       ctx.fillText(p.allocated.toLocaleString(), x, barTop - 6)
     }
 
-    // Data points
     if (state.showDataPoints) {
       ctx.beginPath()
       ctx.arc(x, barTop, 3, 0, Math.PI * 2)
       ctx.fillStyle = color
       ctx.fill()
-      ctx.strokeStyle = '#fff'
+      ctx.strokeStyle = dark ? '#1E293B' : '#fff'
       ctx.lineWidth = 1.5
       ctx.stroke()
     }
 
-    plotPoints.push({ x: x + barW / 2, y: barTop + barH / 2, label: p.label, allocated: p.allocated, percentage: p.percentage, color })
+    plotPoints.push({ x: x + barW / 2, y: barTop + barH / 2, label: p.label, allocated: p.allocated, percentage: p.percentage, color, barX, barTop, barW, barH, index: i })
   })
 
   canvas._plotPoints = plotPoints
 
-  // Sum verification
   const totalAllocated = periods.reduce((a, b) => a + b.allocated, 0)
   if (totalAllocated !== state.totalCount) {
     ctx.font = `${state.valueFont} ${state.fontFamily}`
-    ctx.fillStyle = '#EF4444'
+    ctx.fillStyle = dark ? '#F87171' : '#EF4444'
     ctx.textAlign = 'right'
     ctx.textBaseline = 'bottom'
     ctx.fillText(`合计: ${totalAllocated} (误差: ${totalAllocated - state.totalCount})`, width - pad.right, pad.top + chartH - 5)
   } else {
     ctx.font = `${state.valueFont} ${state.fontFamily}`
-    ctx.fillStyle = '#10B981'
+    ctx.fillStyle = dark ? '#4ADE80' : '#10B981'
     ctx.textAlign = 'right'
     ctx.textBaseline = 'bottom'
     ctx.fillText(`合计: ${totalAllocated} ✓`, width - pad.right, pad.top + chartH - 5)
@@ -544,7 +561,8 @@ function buildStep1Form(container) {
     if (state.totalCount <= 0) { alert('总工程量必须大于0'); return }
     state.step = 'result'
     computeResult()
-    buildControls()
+buildControls()
+initTheme()
     startAnimation()
   })
   form.appendChild(btn)
@@ -745,6 +763,38 @@ function createGroup(title, rows) {
 
 function escapeHtml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
+// ==================== THEME TOGGLE ====================
+function initTheme() {
+  const toggle = document.getElementById('theme-toggle')
+  const saved = localStorage.getItem('theme')
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved)
+  }
+  updateToggleIcon()
+  toggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme')
+    const isDark = current === 'dark' || (!current && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    const next = isDark ? 'light' : 'dark'
+    document.documentElement.setAttribute('data-theme', next)
+    localStorage.setItem('theme', next)
+    updateToggleIcon()
+    scheduleDraw()
+  })
+}
+
+function updateToggleIcon() {
+  const toggle = document.getElementById('theme-toggle')
+  const current = document.documentElement.getAttribute('data-theme')
+  const isDark = current === 'dark' || (!current && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  toggle.textContent = isDark ? '☀' : '☾'
+  toggle.setAttribute('aria-label', isDark ? '切换亮色模式' : '切换暗色模式')
+}
+
+function isDarkMode() {
+  const current = document.documentElement.getAttribute('data-theme')
+  return current === 'dark' || (!current && window.matchMedia('(prefers-color-scheme: dark)').matches)
 }
 
 // ==================== INIT ====================
