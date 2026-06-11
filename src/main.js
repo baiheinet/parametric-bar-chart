@@ -714,12 +714,10 @@ function copyData() {
 // ========== HELPERS ==========
 function computeResult() {
   const curve = P6_CURVES[state.selectedCurve]
-  const periods = generatePeriods('2026-01-01') // Use a fixed start date; could be made configurable
+  const periods = generatePeriods('2026-01-01')
 
-  // Adjust curve to match the number of periods
   const allocated = allocateQuantity(curve.values, state.totalCount)
 
-  // Merge
   periods.forEach((p, i) => {
     p.percentage = allocated[i] ? allocated[i].percentage || 0 : 0
     p.allocated = allocated[i] ? allocated[i].allocated : 0
@@ -731,6 +729,21 @@ function computeResult() {
 
   state.periods = periods
   state.chartTitle = `${state.taskName} - ${curve.shortName}`
+  updateStatsBar()
+}
+
+function updateStatsBar() {
+  const bar = document.getElementById('stats-bar')
+  if (!bar || !state.periods.length) return
+  const curve = P6_CURVES[state.selectedCurve]
+  const total = state.periods.reduce((a, b) => a + b.allocated, 0)
+  const max = Math.max(...state.periods.map(p => p.allocated))
+  bar.style.display = 'flex'
+  bar.innerHTML = `
+    <div class="stat-item"><span class="stat-label">总计</span><span class="stat-value">${total.toLocaleString()}</span></div>
+    <div class="stat-item"><span class="stat-label">最大值</span><span class="stat-value">${max.toLocaleString()}</span></div>
+    <div class="stat-item"><span class="stat-label">曲线类型</span><span class="stat-value" style="color:${curve.color}">${curve.shortName}</span></div>
+  `
 }
 
 function createTextRow(label, key, value, required) {
