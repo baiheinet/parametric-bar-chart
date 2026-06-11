@@ -419,9 +419,9 @@ function animate(timestamp) {
   if (!state.animating || !state.periods.length) { draw(); return }
   if (!animStart) animStart = timestamp
   const elapsed = timestamp - animStart
-  const duration = 800
+  const n = state.periods.length
+  const duration = state.sequentialAnim ? 600 + n * 60 : 800
   state.animProgress = Math.min(1, elapsed / duration)
-  const eased = 1 - Math.pow(1 - state.animProgress, 3)
   draw()
   if (state.animProgress < 1) {
     animFrame = requestAnimationFrame(animate)
@@ -462,15 +462,25 @@ canvas.addEventListener('mousemove', (e) => {
     tooltip.style.left = tx + 'px'
     tooltip.style.top = ty + 'px'
     canvas.style.cursor = 'pointer'
+    highlightTableRow(closest.index)
   } else {
     tooltip.classList.remove('visible')
     canvas.style.cursor = 'default'
+    highlightTableRow(-1)
   }
 })
 
 canvas.addEventListener('mouseleave', () => {
   tooltip.classList.remove('visible')
+  highlightTableRow(-1)
 })
+
+function highlightTableRow(index) {
+  document.querySelectorAll('.data-viewer tbody tr[data-bar-index]').forEach(tr => {
+    const i = Number(tr.dataset.barIndex)
+    tr.style.background = i === index ? 'var(--primary-light)' : ''
+  })
+}
 
 // ==================== BUILD CONTROLS ====================
 function buildControls() {
@@ -669,7 +679,7 @@ function buildDataPanel(container) {
   let html = '<thead><tr><th style="width:60px">工期计划单位</th><th style="color:' + curve.color + '">分配值</th><th style="width:70px">占比(%)</th></tr></thead>'
   html += '<tbody>'
   state.periods.forEach((p, i) => {
-    html += `<tr><td style="text-align:left">${p.label}</td><td style="text-align:right">${p.allocated.toLocaleString()}</td><td style="text-align:right">${p.percentage}</td></tr>`
+    html += `<tr data-bar-index="${i}"><td style="text-align:left">${p.label}</td><td style="text-align:right">${p.allocated.toLocaleString()}</td><td style="text-align:right">${p.percentage}</td></tr>`
   })
   html += `<tr style="font-weight:bold;background:var(--bg)"><td style="text-align:left">合计</td><td style="text-align:right">${state.periods.reduce((a, b) => a + b.allocated, 0).toLocaleString()}</td><td style="text-align:right">100.00</td></tr>`
   html += '</tbody>'
@@ -677,6 +687,17 @@ function buildDataPanel(container) {
   viewer.appendChild(table)
   div.appendChild(viewer)
   container.appendChild(div)
+
+  table.querySelectorAll('tbody tr[data-bar-index]').forEach(tr => {
+    tr.addEventListener('mouseenter', () => {
+      state.hoverBarIndex = Number(tr.dataset.barIndex)
+      scheduleDraw()
+    })
+    tr.addEventListener('mouseleave', () => {
+      state.hoverBarIndex = -1
+      scheduleDraw()
+    })
+  })
 }
 }
 
